@@ -4,17 +4,36 @@ import {
     Card,
     CardTitle,
     CardGrid,
+    CardBody,
     Icon,
     Row,
     Col,
-    AggregateStatusNotifications, AggregateStatusNotification
+    AggregateStatusNotifications,
+    AggregateStatusNotification,
+    Masthead,
+    MastheadCollapse,
+    MastheadDropdown,
+    MenuItem,
 } from "patternfly-react";
 
 import "./App.css"
-import CardBody from "patternfly-react/dist/esm/components/Cards/CardBody";
+
+import HorizontalNav from "patternfly-react/dist/esm/components/HorizontalNav/HorizontalNav";
+import HorizontalNavMenu from "patternfly-react/dist/esm/components/HorizontalNav/HorizontalNavMenu";
+import HorizontalNavMenuItem from "patternfly-react/dist/esm/components/HorizontalNav/HorizontalNavMenuItem";
 
 class App extends React.Component {
     render() {
+        return <HorizontalNav>
+            <Masthead
+                title="IoT simulator console"
+                navToggle={false}
+                thin
+            />
+            <HorizontalNavMenu>
+                <HorizontalNavMenuItem id="overview" title="Overview"></HorizontalNavMenuItem>
+            </HorizontalNavMenu>
+        </HorizontalNav>
         return <Home/>
     }
 }

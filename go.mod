@@ -9,4 +9,5 @@ require (
 	github.com/ugorji/go/codec v0.0.0-20181209151446-772ced7fd4c2 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
+	k8s.io/client-go v0.0.0-20180628043050-7d04d0e2a0a1
 )
