@@ -9,12 +9,11 @@ RUN dnf -y update
 RUN dnf -y install nodejs golang
 
 RUN mkdir -p /src
-ADD . /src
+ADD . /
 
-RUN cd /src && go mod download
+RUN go mod download
 
 RUN \
-    cd /src && \
     npm install && \
     npm run build && \
     go build -o /iot-simulator-console .
