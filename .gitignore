@@ -1,0 +1,9 @@
+
+# Node Hell
+
+node_modules/
+build/
+
+# IntelliJ
+
+.idea/
