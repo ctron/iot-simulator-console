@@ -16,6 +16,6 @@ RUN go mod download
 RUN \
     npm install && \
     npm run build && \
-    go build -o /iot-simulator-console .
+    go build -o /iot-simulator-console cmd
 
 ENTRYPOINT /iot-simulator-console
