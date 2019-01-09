@@ -7,6 +7,7 @@ EXPOSE 8080
 
 RUN dnf -y update
 RUN dnf -y install nodejs golang
+RUN go version
 
 RUN mkdir -p /src
 ADD . /
