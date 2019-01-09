@@ -9,13 +9,20 @@ RUN dnf -y update
 RUN dnf -y install nodejs golang
 RUN go version
 
-RUN mkdir -p /src
-ADD . /
+ENV \
+    GOPATH=/go
 
-RUN go mod download
+RUN mkdir -p /go/src/github.com/ctron
+ADD . /go/src/github.com/ctron/iot-simulator-console
+
+WORKDIR /go/src/github.com/ctron/iot-simulator-console
+
+RUN GO111MODULE=on go mod vendor
 
 RUN npm install
 RUN npm run build
-RUN go build -o /iot-simulator-console cmd
+RUN cd cmd && go build -o /iot-simulator-console .
+
+WORKDIR /
 
 ENTRYPOINT /iot-simulator-console

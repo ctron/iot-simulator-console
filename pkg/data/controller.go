@@ -20,8 +20,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"strconv"
 
-	"github.com/prometheus/client_golang/api"
-	"github.com/prometheus/common/model"
+	// "github.com/prometheus/client_golang/api"
+	// "github.com/prometheus/common/model"
 )
 
 type controller struct {

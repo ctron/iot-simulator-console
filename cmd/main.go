@@ -18,10 +18,7 @@ import (
 	"github.com/ctron/iot-simulator-console/pkg/data"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	promapi "github.com/prometheus/client_golang/api"
-	"github.com/prometheus/client_golang/api/prometheus/v1"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd/api"
 	"log"
 	"net/http"
 	"os"
@@ -51,9 +48,8 @@ func main() {
 		log.Fatalf("Error building kubernetes client: %v", err.Error())
 	}
 
-	promClient, err := promapi.NewClient(promapi.Config{Address: ""})
-	promApi := v1.NewAPI(promClient)
-	promApi.
+	// promClient, err := promapi.NewClient(promapi.Config{Address: ""})
+	// promApi := v1.NewAPI(promClient)
 
 	controller := data.NewController(namespace, client, appsclient);
 	router := gin.Default()
@@ -79,13 +75,16 @@ func main() {
 		c.Header("Content-Type", "application/json")
 		result, err := controller.BuildOverview()
 		if err != nil {
-			c.Error(err)
+			_ = c.Error(err)
 		} else {
 			c.JSON(http.StatusOK, result)
 		}
 	})
 
-	router.Run(":8080")
+	err = router.Run(":8080")
+	if err != nil {
+		log.Fatalf("Error running router: %v", err)
+	}
 }
 
 func JokeHandler(c *gin.Context) {
