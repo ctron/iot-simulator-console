@@ -22,6 +22,7 @@ RUN GO111MODULE=on go mod vendor
 RUN npm install
 RUN npm run build
 RUN cd cmd && go build -o /iot-simulator-console .
+RUN mv build /
 
 WORKDIR /
 
