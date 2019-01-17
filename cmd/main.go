@@ -18,6 +18,7 @@ import (
 	"github.com/ctron/iot-simulator-console/pkg/data"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/api/prometheus/v1"
 	"k8s.io/client-go/kubernetes"
 	"log"
 	"net/http"
@@ -25,12 +26,34 @@ import (
 
 	appsv1 "github.com/openshift/client-go/apps/clientset/versioned/typed/apps/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
+
+	promapi "github.com/prometheus/client_golang/api"
 )
 
 func main() {
 	flag.Parse()
 
 	namespace, _ := os.LookupEnv("NAMESPACE")
+
+	prometheusUrl := os.Getenv("PROMETHEUS_URL")
+	if prometheusUrl == "" {
+		prometheusHost := os.Getenv("PROMETHEUS_HOST")
+		if prometheusHost == "" {
+			prometheusHost = "prometheus-operated." + namespace + ".svc"
+		}
+		prometheusPort := os.Getenv("PROMETHEUS_PORT")
+		if prometheusPort == "" {
+			prometheusPort = ":9090"
+		} else {
+			prometheusPort = ":" + prometheusPort
+		}
+		prometheusProto := os.Getenv("PROMETHEUS_PROTO")
+		if prometheusProto == "" {
+			prometheusPort = "http"
+		}
+		prometheusUrl = prometheusProto + "://" + prometheusHost + prometheusPort
+	}
+	log.Printf("Using Prometheus endpoint: %s", prometheusUrl)
 
 	cfg, err := config.GetConfig()
 	if err != nil {
@@ -48,10 +71,10 @@ func main() {
 		log.Fatalf("Error building kubernetes client: %v", err.Error())
 	}
 
-	// promClient, err := promapi.NewClient(promapi.Config{Address: ""})
-	// promApi := v1.NewAPI(promClient)
+	promClient, err := promapi.NewClient(promapi.Config{Address: prometheusUrl})
+	promApi := v1.NewAPI(promClient)
 
-	controller := data.NewController(namespace, client, appsclient);
+	controller := data.NewController(namespace, client, appsclient, promApi)
 	router := gin.Default()
 
 	router.Use(

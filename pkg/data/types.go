@@ -18,26 +18,12 @@ type Overview struct {
 }
 
 type Tenant struct {
-	Name       string           `json:"name"`
-	Statistics TenantStatistics `json:"statistics"`
+	Name      string     `json:"name"`
+	Consumers []Consumer `json:"consumers"`
 }
 
-type TypeStatistics struct {
-	Producer ProducerRate `json:"producer""`
-	Consumer ConsumerRate `json:"consumer"`
-}
-
-type ConsumerRate struct {
-	Replicas     uint32  `json:"replicas"`
-	ReceivedRate float64 `json:"receivedRate"`
-}
-
-type ProducerRate struct {
-	Replicas          uint32  `json:"replicas"`
-	MessagesPerSecond float64 `json:"messagesPerSecond"`
-}
-
-type TenantStatistics struct {
-	Telemetry TypeStatistics `json:"telemetry"`
-	Event     TypeStatistics `json:"event"`
+type Consumer struct {
+	Type              string   `json:"type"`
+	Replicas          uint32   `json:"replicas"`
+	MessagesPerSecond *float64 `json:"messagesPerSecond"`
 }

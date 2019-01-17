@@ -15,6 +15,7 @@ import {
     MastheadCollapse,
     MastheadDropdown,
     MenuItem,
+    ListGroup,
     ListView,
     ListViewItem, ListViewInfoItem,
 } from "patternfly-react";
@@ -81,30 +82,40 @@ class Home extends React.Component {
 
     render() {
         return (
-            <ListView>
+            <div>
                 {
                     this.state.overview.tenants.map(function (tenant, i) {
                         return (
-                            <ListViewItem
-                                heading={tenant.name}
-                                additionalInfo={[
-                                    <ListViewInfoItem>
-                                        <Icon type="fa" name="angle-double-up"/>
-                                        <strong>{tenant.statistics.telemetry.producer.messagesPerSecond} / {tenant.statistics.event.producer.messagesPerSecond}</strong>
-                                        Producer
-                                    </ListViewInfoItem>,
-                                    <ListViewInfoItem>
-                                        <Icon type="fa" name="angle-double-down"/>
-                                        <strong>{tenant.statistics.telemetry.consumer.replicas} / {tenant.statistics.event.consumer.replicas}</strong>
-                                        Consumer
-                                    </ListViewInfoItem>,
-                                ]}
-                            >
-                            </ListViewItem>
-                        );
+                            <ListGroup>
+                                <h2>{tenant.name}</h2>
+                                <ListView>
+                                    {
+                                        tenant.consumers.map(function (consumer, i) {
+                                            return (
+                                                <ListViewItem
+                                                    heading="consumer"
+                                                    description={consumer.type}
+                                                    additionalInfo={[
+                                                        <ListViewInfoItem>
+                                                            <Icon type="fa" name="cubes"/>
+                                                            <strong>{consumer.replicas}</strong>
+                                                        </ListViewInfoItem>,
+                                                        <ListViewInfoItem>
+                                                            <Icon type="fa" name="angle-double-down"/>
+                                                            <strong>{consumer.messagesPerSecond}</strong>
+                                                        </ListViewInfoItem>
+                                                    ]}
+                                                >
+                                                </ListViewItem>
+                                            )
+                                        })
+                                    }
+                                </ListView>
+                            </ListGroup>
+                        )
                     })
                 }
-            </ListView>
+            </div>
         )
     }
 }
