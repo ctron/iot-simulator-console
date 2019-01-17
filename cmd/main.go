@@ -49,7 +49,7 @@ func main() {
 		}
 		prometheusProto := os.Getenv("PROMETHEUS_PROTO")
 		if prometheusProto == "" {
-			prometheusPort = "http"
+			prometheusProto = "http"
 		}
 		prometheusUrl = prometheusProto + "://" + prometheusHost + prometheusPort
 	}
