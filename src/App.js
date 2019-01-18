@@ -80,7 +80,58 @@ class Home extends React.Component {
         clearInterval(this.interval);
     }
 
+    renderConsumers(tenant) {
+        if (tenant.consumers == null) {
+            return
+        }
+        return tenant.consumers.map(function (consumer, i) {
+            return (
+                <ListViewItem
+                    heading="consumer"
+                    description={consumer.type}
+                    additionalInfo={[
+                        <ListViewInfoItem>
+                            <Icon type="fa" name="cubes"/>
+                            <strong>{consumer.replicas}</strong>
+                        </ListViewInfoItem>,
+                        <ListViewInfoItem>
+                            <Icon type="fa" name="angle-double-down"/>
+                            <strong>{consumer.messagesPerSecond}</strong>
+                        </ListViewInfoItem>
+                    ]}
+                >
+                </ListViewItem>
+            )
+        })
+    }
+
+    renderProducers(tenant) {
+        if (tenant.producers == null) {
+            return
+        }
+        return tenant.producers.map(function (producer, i) {
+            return (
+                <ListViewItem
+                    heading="producer"
+                    description={producer.type}
+                    additionalInfo={[
+                        <ListViewInfoItem>
+                            <Icon type="fa" name="cubes"/>
+                            <strong>{producer.replicas}</strong>
+                        </ListViewInfoItem>,
+                        <ListViewInfoItem>
+                            <Icon type="fa" name="angle-double-up"/>
+                            <strong>{producer.protocol}</strong>
+                        </ListViewInfoItem>
+                    ]}
+                >
+                </ListViewItem>
+            )
+        })
+    }
+
     render() {
+        const o = this
         return (
             <div>
                 {
@@ -89,27 +140,8 @@ class Home extends React.Component {
                             <ListGroup>
                                 <h2>{tenant.name}</h2>
                                 <ListView>
-                                    {
-                                        tenant.consumers.map(function (consumer, i) {
-                                            return (
-                                                <ListViewItem
-                                                    heading="consumer"
-                                                    description={consumer.type}
-                                                    additionalInfo={[
-                                                        <ListViewInfoItem>
-                                                            <Icon type="fa" name="cubes"/>
-                                                            <strong>{consumer.replicas}</strong>
-                                                        </ListViewInfoItem>,
-                                                        <ListViewInfoItem>
-                                                            <Icon type="fa" name="angle-double-down"/>
-                                                            <strong>{consumer.messagesPerSecond}</strong>
-                                                        </ListViewInfoItem>
-                                                    ]}
-                                                >
-                                                </ListViewItem>
-                                            )
-                                        })
-                                    }
+                                    {o.renderConsumers(tenant)}
+                                    {o.renderProducers(tenant)}
                                 </ListView>
                             </ListGroup>
                         )

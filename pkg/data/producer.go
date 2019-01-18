@@ -13,27 +13,27 @@
 
 package data
 
-type Overview struct {
-	Tenants []Tenant `json:"tenants"`
+import (
+	"github.com/openshift/api/apps/v1"
+)
+
+func isProducer(dc *v1.DeploymentConfig) bool {
+	return dc.Labels["iot.producer"] != ""
 }
 
-type Tenant struct {
-	Name      string     `json:"name"`
-	Consumers []Consumer `json:"consumers"`
-	Producers []Producer `json:"producers"`
-}
+func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) {
+	if !isProducer(dc) {
+		return
+	}
 
-type Component struct {
-	Type     string `json:"type"`
-	Replicas uint32 `json:"replicas"`
-}
+	tenant, component := c.fillCommon(tenants, dc)
 
-type Consumer struct {
-	Component         `json:",inline"`
-	MessagesPerSecond *float64 `json:"messagesPerSecond"`
-}
+	if tenant == nil {
+		return
+	}
 
-type Producer struct {
-	Component `json:",inline"`
-	Protocol  string `json:"protocol"`
+	tenant.Producers = append(tenant.Producers, Producer{
+		Component: component,
+		Protocol:  dc.Labels["iot.producer"],
+	})
 }
