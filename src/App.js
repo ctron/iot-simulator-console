@@ -122,7 +122,7 @@ class Home extends React.Component {
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-up"/>
                             <strong>
-                                {producer.messagesPerSecondConfigured} → {producer.messagesPerSecondScheduled.toFixed(0)} → {producer.messagesPerSecondSent.toFixed(0)}
+                                {producer.messagesPerSecondConfigured} → {producer.messagesPerSecondScheduled ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"} → {producer.messagesPerSecondSent ? producer.messagesPerSecondSent.toFixed(0) : "␀"}
                             </strong>
                         </ListViewInfoItem>
                     ]}
