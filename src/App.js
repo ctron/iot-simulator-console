@@ -113,7 +113,7 @@ class Home extends React.Component {
             return (
                 <ListViewItem
                     heading="producer"
-                    description={producer.type}
+                    description={producer.type + " / " + producer.protocol}
                     additionalInfo={[
                         <ListViewInfoItem>
                             <Icon type="fa" name="cubes"/>
@@ -121,7 +121,9 @@ class Home extends React.Component {
                         </ListViewInfoItem>,
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-up"/>
-                            <strong>{producer.protocol}</strong>
+                            <strong>
+                                {producer.messagesPerSecondConfigured} → {producer.messagesPerSecondScheduled.toFixed(0)} → {producer.messagesPerSecondSent.toFixed(0)}
+                            </strong>
                         </ListViewInfoItem>
                     ]}
                 >

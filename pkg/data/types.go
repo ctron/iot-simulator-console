@@ -36,4 +36,8 @@ type Consumer struct {
 type Producer struct {
 	Component `json:",inline"`
 	Protocol  string `json:"protocol"`
+
+	MessagesPerSecondConfigured *float64 `json:"messagesPerSecondConfigured"`
+	MessagesPerSecondScheduled  *float64 `json:"messagesPerSecondScheduled"`
+	MessagesPerSecondSent       *float64 `json:"messagesPerSecondSent"`
 }
