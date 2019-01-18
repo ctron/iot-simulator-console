@@ -36,7 +36,7 @@ class App extends React.Component {
                     thin
                 />
                 <HorizontalNavMenu>
-                    <HorizontalNavMenuItem id="overview" title="Overview"></HorizontalNavMenuItem>
+                    <HorizontalNavMenuItem id="overview" title="Overview"/>
                 </HorizontalNavMenu>
             </HorizontalNav>
             <div className="container-fluid">
@@ -57,7 +57,7 @@ class Home extends React.Component {
             overview: {
                 tenants: []
             },
-        }
+        };
         this.refreshData();
     }
 
@@ -67,8 +67,8 @@ class Home extends React.Component {
                 return result.json()
             })
             .then(data => {
-                console.log(data)
-                this.setState({overview: data})
+                console.log(data);
+                this.setState({overview: data});
             })
     }
 
@@ -126,12 +126,12 @@ class Home extends React.Component {
                     ]}
                 >
                 </ListViewItem>
-            )
+            );
         })
     }
 
     render() {
-        const o = this
+        const o = this;
         return (
             <div>
                 {
@@ -148,6 +148,6 @@ class Home extends React.Component {
                     })
                 }
             </div>
-        )
+        );
     }
 }
