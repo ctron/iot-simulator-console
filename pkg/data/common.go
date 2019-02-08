@@ -18,9 +18,8 @@ import (
 	"github.com/prometheus/common/log"
 )
 
-func getMessageType(dc *v1.DeploymentConfig) (string, error) {
-	// FIXME: impelement
-	return "telemetry", nil
+func getMessageType(dc *v1.DeploymentConfig) string {
+	return dc.Labels["iot.simulator.consume.type"]
 }
 
 func (c *controller) fillCommon(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) (*Tenant, Component) {
@@ -32,8 +31,8 @@ func (c *controller) fillCommon(tenants *map[string]*Tenant, dc *v1.DeploymentCo
 
 	tenant := registerTenant(tenants, tenantName)
 
-	messageType, err := getMessageType(dc)
-	if err != nil {
+	messageType := getMessageType(dc)
+	if messageType == "" {
 		log.Warn("Missing message type")
 		return nil, Component{}
 	}

@@ -22,25 +22,21 @@ import (
 
 type controller struct {
 	namespace     string
+	simulator     string
 	client        *kubernetes.Clientset
 	appsclient    *appsv1.AppsV1Client
 	metricsClient *metrics.MetricsClient
 }
 
-func NewController(namespace string, client *kubernetes.Clientset, appsclient *appsv1.AppsV1Client, metricsClient *metrics.MetricsClient) *controller {
+func NewController(namespace string, simulator string, client *kubernetes.Clientset, appsclient *appsv1.AppsV1Client, metricsClient *metrics.MetricsClient) *controller {
 	return &controller{
 		namespace:     namespace,
+		simulator:     simulator,
 		client:        client,
 		appsclient:    appsclient,
 		metricsClient: metricsClient,
 	}
 }
-
-/*
-func isProducer(labels *map[string]string) bool {
-	return (*labels)["iot.simulator.app"] == "producer"
-}
-*/
 
 func registerTenant(tenants *map[string]*Tenant, tenantName string) *Tenant {
 	tenant, ok := (*tenants)[tenantName]
@@ -54,7 +50,9 @@ func registerTenant(tenants *map[string]*Tenant, tenantName string) *Tenant {
 func (c *controller) BuildOverview() (*Overview, error) {
 
 	items, err := c.appsclient.DeploymentConfigs(c.namespace).
-		List(metav1.ListOptions{})
+		List(metav1.ListOptions{
+			LabelSelector: "iot.simulator=" + c.simulator,
+		})
 
 	if err != nil {
 		return nil, err

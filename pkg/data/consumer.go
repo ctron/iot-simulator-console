@@ -22,7 +22,7 @@ import (
 )
 
 func isConsumer(dc *v1.DeploymentConfig) bool {
-	return dc.Labels["deploymentconfig"] == "simulator-consumer"
+	return dc.Labels["iot.simulator.consume.type"] != ""
 }
 
 func (c *controller) fillConsumer(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) {

@@ -62,7 +62,10 @@ func main() {
 
 	router := gin.Default()
 
-	controller := data.NewController(namespace, client, appsclient, metricsClient)
+	simulator := os.Getenv("SIMULATOR_ID")
+	log.Println("Running for simulator: ", simulator)
+
+	controller := data.NewController(namespace, simulator, client, appsclient, metricsClient)
 
 	router.Use(
 		static.Serve(
@@ -80,7 +83,6 @@ func main() {
 		})
 	})
 
-	// api.GET("/overview", JokeHandler)
 	api.GET("/overview", func(c *gin.Context) {
 		c.Header("Content-Type", "application/json")
 		result, err := controller.BuildOverview()
@@ -95,11 +97,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error running router: %v", err)
 	}
-}
-
-func JokeHandler(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Jokes handler not implemented yet",
-	})
 }
