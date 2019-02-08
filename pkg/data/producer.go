@@ -23,7 +23,7 @@ import (
 )
 
 func isProducer(dc *v1.DeploymentConfig) bool {
-	return dc.Labels["iot.producer"] != ""
+	return dc.Labels["iot.simulator.app"] == "producer"
 }
 
 func calcConfiguredMessagesPerSecond(dc *v1.DeploymentConfig) *float64 {
@@ -75,7 +75,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		return
 	}
 
-	protocol := dc.Labels["iot.producer"]
+	protocol := dc.Labels["iot.simulator.producer.protocol"]
 	if protocol == "" {
 		return
 	}
