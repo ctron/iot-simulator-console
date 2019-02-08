@@ -19,7 +19,7 @@ import (
 )
 
 func getMessageType(dc *v1.DeploymentConfig) string {
-	return dc.Labels["iot.simulator.consume.type"]
+	return dc.Labels["iot.simulator.message.type"]
 }
 
 func (c *controller) fillCommon(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) (*Tenant, Component) {
