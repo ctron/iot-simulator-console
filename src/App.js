@@ -96,7 +96,7 @@ class Home extends React.Component {
                         </ListViewInfoItem>,
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-down"/>
-                            <strong>{consumer.messagesPerSecond}</strong>
+                            <strong>{consumer.messagesPerSecond} → {consumer.messagesPerSecond ? consumer.messagesPerSecond.toFixed(0) : "␀"}</strong>
                         </ListViewInfoItem>
                     ]}
                 >
