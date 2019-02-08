@@ -24,8 +24,8 @@ func getMessageType(dc *v1.DeploymentConfig) string {
 
 func (c *controller) fillCommon(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) (*Tenant, Component) {
 
-	tenantName, ok := dc.Spec.Template.Labels["iot.simulator.tenant"]
-	if !ok {
+	tenantName := dc.Spec.Template.Labels["iot.simulator.tenant"]
+	if tenantName == "" {
 		return nil, Component{}
 	}
 
