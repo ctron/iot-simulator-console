@@ -16,6 +16,7 @@ package metrics
 import (
 	"context"
 	"fmt"
+	"github.com/prometheus/common/log"
 	"time"
 
 	promapi "github.com/prometheus/client_golang/api"
@@ -82,6 +83,8 @@ func NewMetrics(configuration Configuration) (*MetricsClient, error) {
 }
 
 func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64, error) {
+
+	log.Info("Query: ", query)
 
 	s := time.Now()
 	e := s.Add(-time.Minute)

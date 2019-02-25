@@ -41,7 +41,9 @@ func (c *controller) fillConsumer(tenants *map[string]*Tenant, dc *v1.Deployment
 		fmt.Sprintf(`sum(irate(messages_received_total{type="%s",tenant="%s"}[1m]))`, component.Type, tenant.Name),
 	)
 	if err != nil {
-		log.Warn("Failed to query metrics", err.Error())
+		log.Warn("Failed to query metrics ", err.Error())
+	} else {
+		log.Info("Query result: ", *mps)
 	}
 
 	tenant.Consumers = append(tenant.Consumers, Consumer{
