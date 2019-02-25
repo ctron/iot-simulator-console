@@ -22,7 +22,7 @@ RUN \
     npm run build && \
     cd cmd && \
     go build -o /iot-simulator-console . && \
-    mv build && \
+    mv build / && \
     true
 
 ENTRYPOINT /iot-simulator-console
