@@ -22,6 +22,7 @@ RUN \
     npm run build && \
     cd cmd && \
     go build -o /iot-simulator-console . && \
+    cd .. && \
     mv build / && \
     true
 
