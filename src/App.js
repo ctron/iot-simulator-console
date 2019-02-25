@@ -97,7 +97,7 @@ class Home extends React.Component {
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-down"/>
                             <strong>
-                                {consumer.messagesPerSecond} → {consumer.messagesPerSecond ? consumer.messagesPerSecond.toFixed(0) : "␀"}
+                                {consumer.messagesPerSecond}&nbsp;→&nbsp;{consumer.messagesPerSecond ? consumer.messagesPerSecond.toFixed(0) : "␀"}
                             </strong>
                         </ListViewInfoItem>
                     ]}
@@ -124,10 +124,10 @@ class Home extends React.Component {
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-up"/>
                             <strong>
-                                {producer.messagesPerSecondConfigured} →
-                                {producer.messagesPerSecondScheduled ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"} →
-                                {producer.messagesPerSecondSent ? producer.messagesPerSecondSent.toFixed(0) : "␀"} /
-                                {producer.messagesPerSecondFailed ? producer.messagesPerSecondFailed.toFixed(0) : "␀"} /
+                                {producer.messagesPerSecondConfigured}&nbsp;→&nbsp;
+                                {producer.messagesPerSecondScheduled ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}&nbsp;→&nbsp;
+                                {producer.messagesPerSecondSent ? producer.messagesPerSecondSent.toFixed(0) : "␀"}&nbsp;/&nbsp;
+                                {producer.messagesPerSecondFailed ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}&nbsp;/&nbsp;
                                 {producer.messagesPerSecondErrored ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}
                             </strong>
                         </ListViewInfoItem>
