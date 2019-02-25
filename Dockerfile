@@ -15,15 +15,14 @@ ENV \
 RUN mkdir -p /go/src/github.com/ctron
 ADD . /go/src/github.com/ctron/iot-simulator-console
 
-WORKDIR /go/src/github.com/ctron/iot-simulator-console
-
-RUN GO111MODULE=on go mod vendor
-
-RUN npm install
-RUN npm run build
-RUN cd cmd && go build -o /iot-simulator-console .
-RUN mv build /
-
-WORKDIR /
+RUN \
+    cd /go/src/github.com/ctron/iot-simulator-console && \
+    GO111MODULE=on go mod vendor && \
+    npm install && \
+    npm run build && \
+    cd cmd && \
+    go build -o /iot-simulator-console . && \
+    mv build && \
+    true
 
 ENTRYPOINT /iot-simulator-console
