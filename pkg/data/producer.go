@@ -89,7 +89,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 	}
 
 	mpsSent, err := c.metricsClient.QuerySingle(context.TODO(),
-		fmt.Sprintf(`sum(irate(messages_success_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
+		fmt.Sprintf(`sum(irate(messages_sent_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
 			component.Type, tenant.Name, protocol))
 
 	if err != nil {

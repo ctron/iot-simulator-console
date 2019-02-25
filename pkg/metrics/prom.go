@@ -97,8 +97,10 @@ func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64
 	switch v := val.(type) {
 	case *prommodel.Scalar:
 		f := float64(v.Value)
+		log.Info("Query result - scalar: ", f)
 		return &f, nil
 	case prommodel.Vector:
+		log.Info("Query result - vector: ", v)
 		if len(v) > 0 {
 			f := float64(v[0].Value)
 			return &f, nil
