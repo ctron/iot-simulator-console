@@ -96,7 +96,9 @@ class Home extends React.Component {
                         </ListViewInfoItem>,
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-down"/>
-                            <strong>{consumer.messagesPerSecond} → {consumer.messagesPerSecond ? consumer.messagesPerSecond.toFixed(0) : "␀"}</strong>
+                            <strong>
+                                {consumer.messagesPerSecond} → {consumer.messagesPerSecond ? consumer.messagesPerSecond.toFixed(0) : "␀"}
+                            </strong>
                         </ListViewInfoItem>
                     ]}
                 >
@@ -122,7 +124,11 @@ class Home extends React.Component {
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-up"/>
                             <strong>
-                                {producer.messagesPerSecondConfigured} → {producer.messagesPerSecondScheduled ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"} → {producer.messagesPerSecondSent ? producer.messagesPerSecondSent.toFixed(0) : "␀"}
+                                {producer.messagesPerSecondConfigured} →
+                                {producer.messagesPerSecondScheduled ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"} →
+                                {producer.messagesPerSecondSent ? producer.messagesPerSecondSent.toFixed(0) : "␀"} /
+                                {producer.messagesPerSecondFailed ? producer.messagesPerSecondFailed.toFixed(0) : "␀"} /
+                                {producer.messagesPerSecondErrored ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}
                             </strong>
                         </ListViewInfoItem>
                     ]}

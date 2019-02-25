@@ -40,4 +40,6 @@ type Producer struct {
 	MessagesPerSecondConfigured *float64 `json:"messagesPerSecondConfigured"`
 	MessagesPerSecondScheduled  *float64 `json:"messagesPerSecondScheduled"`
 	MessagesPerSecondSent       *float64 `json:"messagesPerSecondSent"`
+	MessagesPerSecondFailed     *float64 `json:"messagesPerSecondFailed"`
+	MessagesPerSecondErrored    *float64 `json:"messagesPerSecondErrored"`
 }
