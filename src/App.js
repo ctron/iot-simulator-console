@@ -96,8 +96,8 @@ class Home extends React.Component {
                         </ListViewInfoItem>,
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-down"/>
-                            <strong>
-                                {consumer.messagesPerSecond}&nbsp;→&nbsp;{consumer.messagesPerSecond ? consumer.messagesPerSecond.toFixed(0) : "␀"}
+                            <strong title="msgs/s consumed" data-toggle="tooltip" data-placement="top">
+                                {(consumer.messagesPerSecond != null) ? consumer.messagesPerSecond.toFixed(0) : "␀"}
                             </strong>
                         </ListViewInfoItem>
                     ]}
@@ -124,11 +124,21 @@ class Home extends React.Component {
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-up"/>
                             <strong>
-                                {producer.messagesPerSecondConfigured}&nbsp;→&nbsp;
-                                {producer.messagesPerSecondScheduled ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}&nbsp;→&nbsp;
-                                {producer.messagesPerSecondSent ? producer.messagesPerSecondSent.toFixed(0) : "␀"}&nbsp;/&nbsp;
-                                {producer.messagesPerSecondFailed ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}&nbsp;/&nbsp;
-                                {producer.messagesPerSecondErrored ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}
+                                <span
+                                    title="msgs/s configured" data-toggle="tooltip"
+                                    data-placement="top">{producer.messagesPerSecondConfigured}</span>&nbsp;→&nbsp;
+                                <span
+                                    title="msgs/s scheduled" data-toggle="tooltip"
+                                    data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>&nbsp;→&nbsp;
+                                <span
+                                    title="msgs/s sent" data-toggle="tooltip"
+                                    data-placement="top">{(producer.messagesPerSecondSent != null) ? producer.messagesPerSecondSent.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
+                                <span
+                                    title="msgs/s failed" data-toggle="tooltip"
+                                    data-placement="top">{(producer.messagesPerSecondFailed != null) ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
+                                <span
+                                    title="msgs/s errored" data-toggle="tooltip"
+                                    data-placement="top">{(producer.messagesPerSecondErrored != null) ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}</span>
                             </strong>
                         </ListViewInfoItem>
                     ]}
