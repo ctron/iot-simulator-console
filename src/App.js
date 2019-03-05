@@ -88,16 +88,21 @@ class Home extends React.Component {
             return (
                 <ListViewItem
                     heading="consumer"
+                    leftContent={
+                        <Icon
+                            type="pf"
+                            name={(consumer.messagesPerSecond != null && consumer.messagesPerSecond > 0) ? "ok" : "error-circle-o"}/>
+                    }
                     description={consumer.type}
                     additionalInfo={[
                         <ListViewInfoItem>
                             <Icon type="fa" name="cubes"/>
-                            <strong>{consumer.replicas}</strong>
+                            <strong>{consumer.replicas} Pods</strong>
                         </ListViewInfoItem>,
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-down"/>
-                            <strong title="msgs/s consumed" data-toggle="tooltip" data-placement="top">
-                                {(consumer.messagesPerSecond != null) ? consumer.messagesPerSecond.toFixed(0) : "␀"}
+                            <strong title="msgs/s" data-toggle="tooltip" data-placement="top">
+                                {(consumer.messagesPerSecond != null) ? consumer.messagesPerSecond.toFixed(0) : "␀"} received
                             </strong>
                         </ListViewInfoItem>
                     ]}
@@ -115,24 +120,38 @@ class Home extends React.Component {
             return (
                 <ListViewItem
                     heading="producer"
+                    leftContent={
+                        <Icon
+                            type="pf"
+                            name={(producer.messagesPerSecondFailed != null && producer.messagesPerSecondFailed <= 0) ? "ok" : "error-circle-o"}/>
+                    }
                     description={producer.type + " / " + producer.protocol}
                     additionalInfo={[
                         <ListViewInfoItem>
                             <Icon type="fa" name="cubes"/>
-                            <strong>{producer.replicas}</strong>
+                            <strong>{producer.replicas} Pods</strong>
                         </ListViewInfoItem>,
                         <ListViewInfoItem>
                             <Icon type="fa" name="angle-double-up"/>
+                            <strong>
+                                <span title="msgs/s" data-toggle="tooltip" data-placement="top">
+                                    {(producer.messagesPerSecondSent != null) ? producer.messagesPerSecondSent.toFixed(0) : "␀"} sent</span>
+                            </strong>
+                        </ListViewInfoItem>,
+                        <ListViewInfoItem>
+                            <Icon type="fa" name="clock-o"/>
                             <strong>
                                 <span
                                     title="msgs/s configured" data-toggle="tooltip"
                                     data-placement="top">{producer.messagesPerSecondConfigured}</span>&nbsp;→&nbsp;
                                 <span
                                     title="msgs/s scheduled" data-toggle="tooltip"
-                                    data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>&nbsp;→&nbsp;
-                                <span
-                                    title="msgs/s sent" data-toggle="tooltip"
-                                    data-placement="top">{(producer.messagesPerSecondSent != null) ? producer.messagesPerSecondSent.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
+                                    data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>
+                            </strong>
+                        </ListViewInfoItem>,
+                        <ListViewInfoItem>
+                            <Icon type="fa" name="exclamation-triangle"/>
+                            <strong>
                                 <span
                                     title="msgs/s failed" data-toggle="tooltip"
                                     data-placement="top">{(producer.messagesPerSecondFailed != null) ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
