@@ -1,48 +1,31 @@
 import $ from 'jquery';
 import React from "react";
 import {
-    AggregateStatusCount,
-    Card,
-    CardTitle,
-    CardGrid,
-    CardBody,
-    Icon,
-    Row,
-    Col,
-    AggregateStatusNotifications,
-    AggregateStatusNotification,
-    Masthead,
-    MastheadCollapse,
-    MastheadDropdown,
-    MenuItem,
-    ListGroup,
-    ListView,
-    ListViewItem, ListViewInfoItem,
-} from "patternfly-react";
+    Page, PageHeader, PageSection,
+    DataList, DataListItem, DataListCell,
+    Title,
+} from "@patternfly/react-core";
+
+import {
+    CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, OkIcon, ErrorCircleOIcon, ClockIcon, ExclamationTriangleIcon
+} from '@patternfly/react-icons';
 
 import "./App.css"
 
-import HorizontalNav from "patternfly-react/dist/esm/components/HorizontalNav/HorizontalNav";
-import HorizontalNavMenu from "patternfly-react/dist/esm/components/HorizontalNav/HorizontalNavMenu";
-import HorizontalNavMenuItem from "patternfly-react/dist/esm/components/HorizontalNav/HorizontalNavMenuItem";
-
 class App extends React.Component {
+
     render() {
-        return <div>
-            <HorizontalNav>
-                <Masthead
-                    title="IoT simulator console"
-                    navToggle={false}
-                    thin
-                />
-                <HorizontalNavMenu>
-                    <HorizontalNavMenuItem id="overview" title="Overview"/>
-                </HorizontalNavMenu>
-            </HorizontalNav>
-            <div className="container-fluid">
-                <Home/>
-            </div>
-        </div>
+        const Header = (<PageHeader
+            logo="IoT Simulator"
+        />)
+
+        return <React.Fragment>
+            <Page header={Header}>
+                <PageSection>
+                    <Home/>
+                </PageSection>
+            </Page>
+        </React.Fragment>
     }
 }
 
@@ -86,28 +69,26 @@ class Home extends React.Component {
         }
         return tenant.consumers.map(function (consumer, i) {
             return (
-                <ListViewItem
-                    heading="consumer"
-                    leftContent={
-                        <Icon
-                            type="pf"
-                            name={(consumer.messagesPerSecond != null && consumer.messagesPerSecond > 0) ? "ok" : "error-circle-o"}/>
-                    }
-                    description={consumer.type}
-                    additionalInfo={[
-                        <ListViewInfoItem>
-                            <Icon type="fa" name="cubes"/>
-                            <strong>{consumer.replicas} Pods</strong>
-                        </ListViewInfoItem>,
-                        <ListViewInfoItem>
-                            <Icon type="fa" name="angle-double-down"/>
-                            <strong title="msgs/s" data-toggle="tooltip" data-placement="top">
-                                {(consumer.messagesPerSecond != null) ? consumer.messagesPerSecond.toFixed(0) : "␀"} received
-                            </strong>
-                        </ListViewInfoItem>
-                    ]}
-                >
-                </ListViewItem>
+                <DataListItem>
+                    <DataListCell>
+                        {(consumer.messagesPerSecond != null && consumer.messagesPerSecond > 0) ? <OkIcon/> :
+                            <ErrorCircleOIcon/>}&nbsp;consumer
+                    </DataListCell>
+                    <DataListCell>
+                        {consumer.type}
+                    </DataListCell>
+                    <DataListCell>
+                        <CubesIcon/>&nbsp;<strong>{consumer.replicas} Pods</strong>
+                    </DataListCell>
+                    <DataListCell>
+                        <AngleDoubleDownIcon/>&nbsp;
+                        <strong title="msgs/s" data-toggle="tooltip" data-placement="top">
+                            {(consumer.messagesPerSecond != null) ? consumer.messagesPerSecond.toFixed(0) : "␀"} received
+                        </strong>
+                    </DataListCell>
+                    <DataListCell>&nbsp;</DataListCell>
+                    <DataListCell>&nbsp;</DataListCell>
+                </DataListItem>
             )
         })
     }
@@ -118,51 +99,50 @@ class Home extends React.Component {
         }
         return tenant.producers.map(function (producer, i) {
             return (
-                <ListViewItem
-                    heading="producer"
-                    leftContent={
-                        <Icon
-                            type="pf"
-                            name={(producer.messagesPerSecondFailed != null && producer.messagesPerSecondFailed <= 0) ? "ok" : "error-circle-o"}/>
-                    }
-                    description={producer.type + " / " + producer.protocol}
-                    additionalInfo={[
-                        <ListViewInfoItem>
-                            <Icon type="fa" name="cubes"/>
-                            <strong>{producer.replicas} Pods</strong>
-                        </ListViewInfoItem>,
-                        <ListViewInfoItem>
-                            <Icon type="fa" name="angle-double-up"/>
-                            <strong>
-                                <span title="msgs/s" data-toggle="tooltip" data-placement="top">
-                                    {(producer.messagesPerSecondSent != null) ? producer.messagesPerSecondSent.toFixed(0) : "␀"} sent</span>
-                            </strong>
-                        </ListViewInfoItem>,
-                        <ListViewInfoItem>
-                            <Icon type="fa" name="clock-o"/>
-                            <strong>
-                                <span
-                                    title="msgs/s configured" data-toggle="tooltip"
-                                    data-placement="top">{producer.messagesPerSecondConfigured}</span>&nbsp;→&nbsp;
-                                <span
-                                    title="msgs/s scheduled" data-toggle="tooltip"
-                                    data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>
-                            </strong>
-                        </ListViewInfoItem>,
-                        <ListViewInfoItem>
-                            <Icon type="fa" name="exclamation-triangle"/>
-                            <strong>
-                                <span
-                                    title="msgs/s failed" data-toggle="tooltip"
-                                    data-placement="top">{(producer.messagesPerSecondFailed != null) ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
-                                <span
-                                    title="msgs/s errored" data-toggle="tooltip"
-                                    data-placement="top">{(producer.messagesPerSecondErrored != null) ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}</span>
-                            </strong>
-                        </ListViewInfoItem>
-                    ]}
-                >
-                </ListViewItem>
+                <DataListItem>
+                    <DataListCell>
+                        {(producer.messagesPerSecondFailed != null && producer.messagesPerSecondFailed <= 0) ?
+                            <OkIcon/> :
+                            <ErrorCircleOIcon/>}&nbsp;
+                        producer
+                    </DataListCell>
+                    <DataListCell>
+                        {producer.type + " / " + producer.protocol}
+                    </DataListCell>
+                    <DataListCell>
+                        <CubesIcon/>&nbsp;
+                        <strong>{producer.replicas} Pods</strong>
+                    </DataListCell>
+                    <DataListCell>
+                        <AngleDoubleUpIcon/>&nbsp;
+                        <strong>
+                            <span title="msgs/s" data-toggle="tooltip" data-placement="top">
+                                {(producer.messagesPerSecondSent != null) ? producer.messagesPerSecondSent.toFixed(0) : "␀"} sent</span>
+                        </strong>
+                    </DataListCell>
+                    <DataListCell>
+                        <ClockIcon/>&nbsp;
+                        <strong>
+                            <span
+                                title="msgs/s configured" data-toggle="tooltip"
+                                data-placement="top">{producer.messagesPerSecondConfigured}</span>&nbsp;→&nbsp;
+                            <span
+                                title="msgs/s scheduled" data-toggle="tooltip"
+                                data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>
+                        </strong>
+                    </DataListCell>
+                    <DataListCell>
+                        <ExclamationTriangleIcon/>
+                        <strong>
+                            <span
+                                title="msgs/s failed" data-toggle="tooltip"
+                                data-placement="top">{(producer.messagesPerSecondFailed != null) ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
+                            <span
+                                title="msgs/s errored" data-toggle="tooltip"
+                                data-placement="top">{(producer.messagesPerSecondErrored != null) ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}</span>
+                        </strong>
+                    </DataListCell>
+                </DataListItem>
             );
         })
     }
@@ -174,13 +154,13 @@ class Home extends React.Component {
                 {
                     this.state.overview.tenants.map(function (tenant, i) {
                         return (
-                            <ListGroup>
-                                <h2>{tenant.name}</h2>
-                                <ListView>
+                            <div>
+                                <Title size="3xl">{tenant.name}</Title>
+                                <DataList>
                                     {o.renderConsumers(tenant)}
                                     {o.renderProducers(tenant)}
-                                </ListView>
-                            </ListGroup>
+                                </DataList>
+                            </div>
                         )
                     })
                 }
