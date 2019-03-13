@@ -19,6 +19,7 @@ import (
 	"github.com/openshift/api/apps/v1"
 	"github.com/prometheus/common/log"
 	"math"
+	"sort"
 	"strconv"
 )
 
@@ -103,12 +104,30 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 	if err != nil {
 		log.Warnf("Failed to query msg/s failed: %v", err)
 	}
-	mpsErrored, err := c.metricsClient.QuerySingle(context.TODO(),
-		fmt.Sprintf(`sum(irate(messages_error_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
+	mpsErrored, err := c.metricsClient.QueryMap(context.TODO(),
+		fmt.Sprintf(`sum(irate(messages_error_total{type="%s",tenant="%s",protocol="%s"}[1m])) by (code)`,
 			component.Type, tenant.Name, protocol))
 
 	if err != nil {
 		log.Warnf("Failed to query msg/s errored: %v", err)
+	}
+
+	var chartData []ChartEntry
+	if mpsSent != nil && mpsErrored != nil {
+		chartData = []ChartEntry{
+			{Key: "Success", Value: *mpsSent},
+		}
+		keys := make([]string, 0, len(mpsErrored))
+		for k := range mpsErrored {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			v := mpsErrored[k]
+			if v > 0 {
+				chartData = append(chartData, ChartEntry{k, v})
+			}
+		}
 	}
 
 	tenant.Producers = append(tenant.Producers, Producer{
@@ -118,6 +137,36 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		MessagesPerSecondScheduled:  mpsScheduled,
 		MessagesPerSecondSent:       mpsSent,
 		MessagesPerSecondFailed:     mpsFailed,
-		MessagesPerSecondErrored:    mpsErrored,
+		MessagesPerSecondErrored:    sum(mpsErrored),
+		ChartData:                   chartData,
+		ChartLegend:                 makeLegend(chartData),
 	})
+}
+
+func sum(data map[string]float64) *float64 {
+	if data == nil {
+		return nil
+	}
+
+	var result float64 = 0.0
+
+	for _, v := range data {
+		result += v
+	}
+
+	return &result
+}
+
+func makeLegend(data []ChartEntry) []ChartLegendEntry {
+	if data == nil {
+		return nil
+	}
+
+	result := make([]ChartLegendEntry, len(data))
+
+	for i, e := range data {
+		result[i] = ChartLegendEntry{e.Key}
+	}
+
+	return result
 }

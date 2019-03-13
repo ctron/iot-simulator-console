@@ -1,7 +1,8 @@
 {
   "private": true,
   "dependencies": {
-    "@patternfly/react-core": "^2.5",
+    "@patternfly/react-charts": "^2.1",
+    "@patternfly/react-core": "^2.5.2",
     "ajv": "^6.9.1",
     "babel-cli": "^6",
     "babel-preset-react-app": "^3",

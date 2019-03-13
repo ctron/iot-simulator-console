@@ -42,4 +42,15 @@ type Producer struct {
 	MessagesPerSecondSent       *float64 `json:"messagesPerSecondSent"`
 	MessagesPerSecondFailed     *float64 `json:"messagesPerSecondFailed"`
 	MessagesPerSecondErrored    *float64 `json:"messagesPerSecondErrored"`
+
+	ChartData   []ChartEntry       `json:"chartData"`
+	ChartLegend []ChartLegendEntry `json:"chartLegend"`
+}
+
+type ChartEntry struct {
+	Key   string  `json:"x"`
+	Value float64 `json:"y"`
+}
+type ChartLegendEntry struct {
+	Name string `json:"name"`
 }

@@ -3,20 +3,26 @@ import React from "react";
 import {
     Page, PageHeader, PageSection,
     DataList, DataListItem, DataListCell,
-    Title,
+    Title, Brand,
 } from "@patternfly/react-core";
+import {
+    ChartDonut, ChartBar, ChartLabel, ChartLegend, ChartTheme, Chart, ChartGroup, ChartPie,
+    ChartContainer,
+} from "@patternfly/react-charts";
 
 import {
     CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, OkIcon, ErrorCircleOIcon, ClockIcon, ExclamationTriangleIcon
 } from '@patternfly/react-icons';
 
 import "./App.css"
+import brandImg from "./iot-simulator.svg"
 
 class App extends React.Component {
 
     render() {
         const Header = (<PageHeader
             logo="IoT Simulator"
+            logo={<Brand alt="IoT Simulator" src={brandImg}/>}
         />)
 
         return <React.Fragment>
@@ -87,7 +93,7 @@ class Home extends React.Component {
                         </strong>
                     </DataListCell>
                     <DataListCell>&nbsp;</DataListCell>
-                    <DataListCell>&nbsp;</DataListCell>
+                    <DataListCell width={2}>&nbsp;</DataListCell>
                 </DataListItem>
             )
         })
@@ -99,12 +105,11 @@ class Home extends React.Component {
         }
         return tenant.producers.map(function (producer, i) {
             return (
-                <DataListItem>
+                <DataListItem className="chart-list">
                     <DataListCell>
                         {(producer.messagesPerSecondFailed != null && producer.messagesPerSecondFailed <= 0) ?
                             <OkIcon/> :
-                            <ErrorCircleOIcon/>}&nbsp;
-                        producer
+                            <ErrorCircleOIcon/>}&nbsp;producer
                     </DataListCell>
                     <DataListCell>
                         {producer.type + " / " + producer.protocol}
@@ -131,16 +136,26 @@ class Home extends React.Component {
                                 data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>
                         </strong>
                     </DataListCell>
-                    <DataListCell>
-                        <ExclamationTriangleIcon/>
-                        <strong>
-                            <span
-                                title="msgs/s failed" data-toggle="tooltip"
-                                data-placement="top">{(producer.messagesPerSecondFailed != null) ? producer.messagesPerSecondFailed.toFixed(0) : "␀"}</span>&nbsp;/&nbsp;
-                            <span
-                                title="msgs/s errored" data-toggle="tooltip"
-                                data-placement="top">{(producer.messagesPerSecondErrored != null) ? producer.messagesPerSecondErrored.toFixed(0) : "␀"}</span>
-                        </strong>
+                    <DataListCell className="chart-cell" width={2}>
+                        <div className="chart-inline">
+                            <div>
+                                <ChartPie
+                                    animate={{duration: 500}}
+                                    containerComponent={<ChartContainer responsive={false}/>}
+                                    labels={datum => `${datum.x}: ${datum.y}`}
+                                    height={80} width={80}
+                                    padding={10}
+                                    data={producer.chartData}
+                                />
+                            </div>
+                            <ChartLegend
+                                orientation={"vertical"}
+                                data={producer.chartLegend}
+                                rowGutter={-8} gutter={20}
+                                itemsPerRow={2}
+                                height={80} width={200}
+                            />
+                        </div>
                     </DataListCell>
                 </DataListItem>
             );

@@ -1,0 +1,13 @@
+.chart-list {
+    align-items: center !important;
+}
+
+.chart-cell {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.chart-inline {
+    display: inline-flex;
+}
+

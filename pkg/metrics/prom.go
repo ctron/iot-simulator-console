@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Red Hat Inc
+ * Copyright (c) 2018, 2019 Red Hat Inc
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -82,8 +82,7 @@ func NewMetrics(configuration Configuration) (*MetricsClient, error) {
 
 }
 
-func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64, error) {
-
+func (c *MetricsClient) Query(ctx context.Context, query string) (*prommodel.Value, error) {
 	log.Info("Query: ", query)
 
 	s := time.Now()
@@ -94,7 +93,41 @@ func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64
 		return nil, err
 	}
 
-	switch v := val.(type) {
+	return &val, nil
+}
+
+func (c *MetricsClient) QueryMap(ctx context.Context, query string) (map[string]float64, error) {
+
+	val, err := c.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	switch v := (*val).(type) {
+	case *prommodel.Scalar:
+		return nil, fmt.Errorf("missing map structure: %v", v)
+	case prommodel.Vector:
+		log.Info("Query result - vector: ", v)
+		var result = make(map[string]float64)
+		for _, e := range v {
+			code := string(e.Metric["code"])
+			f := float64(e.Value)
+			result[code] = f
+		}
+		return result, nil
+	default:
+		return nil, fmt.Errorf("unknown result type: %v / %v", (*val).Type().String(), (*val).String())
+	}
+}
+
+func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64, error) {
+
+	val, err := c.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	switch v := (*val).(type) {
 	case *prommodel.Scalar:
 		f := float64(v.Value)
 		log.Info("Query result - scalar: ", f)
@@ -108,7 +141,7 @@ func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64
 			return nil, fmt.Errorf("missing values in vector result")
 		}
 	default:
-		return nil, fmt.Errorf("unknown result type: %v / %v", val.Type().String(), val.String())
+		return nil, fmt.Errorf("unknown result type: %v / %v", (*val).Type().String(), (*val).String())
 	}
 
 }
