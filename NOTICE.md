@@ -9,4 +9,4 @@ of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/
 
 # Copyright Holders
 
-* Copyright 2018 Red Hat, Inc.
+* Copyright 2018, 2019 Red Hat, Inc.

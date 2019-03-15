@@ -77,12 +77,6 @@ func main() {
 	// Setup route group for the API
 	api := router.Group("/api")
 
-	api.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
 	api.GET("/overview", func(c *gin.Context) {
 		c.Header("Content-Type", "application/json")
 		result, err := controller.BuildOverview()

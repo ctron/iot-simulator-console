@@ -1,10 +1,13 @@
 import $ from 'jquery';
 import React from "react";
+
 import {
+    BackgroundImage, BackgroundImageSrc,
     Page, PageHeader, PageSection,
     DataList, DataListItem, DataListCell,
     Title, Brand,
 } from "@patternfly/react-core";
+
 import {
     ChartDonut, ChartBar, ChartLabel, ChartLegend, ChartTheme, Chart, ChartGroup, ChartPie,
     ChartContainer,
@@ -17,15 +20,23 @@ import {
 import "./App.css"
 import brandImg from "./iot-simulator.svg"
 
+import backgroundLg from "./assets/images/bg_lg.jpg"
+import backgroundFilter from "./assets/images/background-filter.svg"
+
 class App extends React.Component {
 
     render() {
+        const background = {
+            [BackgroundImageSrc.lg]: backgroundLg,
+            [BackgroundImageSrc.filter]: backgroundFilter + "#image_overlay",
+        }
         const Header = (<PageHeader
             logo="IoT Simulator"
             logo={<Brand alt="IoT Simulator" src={brandImg}/>}
         />)
 
         return <React.Fragment>
+            <BackgroundImage src={background}/>
             <Page header={Header}>
                 <PageSection>
                     <Home/>
