@@ -16,11 +16,12 @@ package data
 import (
 	"context"
 	"fmt"
-	"github.com/openshift/api/apps/v1"
-	"github.com/prometheus/common/log"
 	"math"
 	"sort"
 	"strconv"
+
+	"github.com/openshift/api/apps/v1"
+	"github.com/prometheus/common/log"
 )
 
 func isProducer(dc *v1.DeploymentConfig) bool {
@@ -81,7 +82,9 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		return
 	}
 
-	mpsScheduled, err := c.metricsClient.QuerySingle(context.TODO(),
+	ctx := context.TODO()
+
+	mpsScheduled, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(irate(messages_scheduled_total{tenant="%s",type="%s",protocol="%s"}[1m]))`,
 			tenant.Name, component.Type, protocol))
 
@@ -89,7 +92,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		log.Warnf("Failed to query msg/s scheduled: %v", err)
 	}
 
-	mpsSent, err := c.metricsClient.QuerySingle(context.TODO(),
+	mpsSent, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(irate(messages_sent_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
 			component.Type, tenant.Name, protocol))
 
@@ -97,14 +100,14 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		log.Warnf("Failed to query msg/s sent: %v", err)
 	}
 
-	mpsFailed, err := c.metricsClient.QuerySingle(context.TODO(),
+	mpsFailed, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(irate(messages_failure_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
 			component.Type, tenant.Name, protocol))
 
 	if err != nil {
 		log.Warnf("Failed to query msg/s failed: %v", err)
 	}
-	mpsErrored, err := c.metricsClient.QueryMap(context.TODO(),
+	mpsErrored, err := c.metricsClient.QueryMap(ctx,
 		fmt.Sprintf(`sum(irate(messages_error_total{type="%s",tenant="%s",protocol="%s"}[1m])) by (code)`,
 			component.Type, tenant.Name, protocol))
 

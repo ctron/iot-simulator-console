@@ -110,7 +110,32 @@ class Home extends React.Component {
         })
     }
 
+    renderChart(producer) {
+        return (<div className="chart-inline">
+            <div>
+                <ChartPie
+                    animate={{duration: 500}}
+                    containerComponent={<ChartContainer responsive={false}/>}
+                    labels={datum => `${datum.x}: ${datum.y}`}
+                    height={80} width={80}
+                    padding={10}
+                    data={producer.chartData}
+                />
+            </div>
+            <ChartLegend
+                orientation={"vertical"}
+                data={producer.chartLegend}
+                rowGutter={-8} gutter={20}
+                itemsPerRow={2}
+                height={80} width={200}
+            />
+        </div>)
+    }
+
     renderProducers(tenant) {
+
+        const o = this
+
         if (tenant.producers == null) {
             return
         }
@@ -148,25 +173,7 @@ class Home extends React.Component {
                         </strong>
                     </DataListCell>
                     <DataListCell className="chart-cell" width={2}>
-                        <div className="chart-inline">
-                            <div>
-                                <ChartPie
-                                    animate={{duration: 500}}
-                                    containerComponent={<ChartContainer responsive={false}/>}
-                                    labels={datum => `${datum.x}: ${datum.y}`}
-                                    height={80} width={80}
-                                    padding={10}
-                                    data={producer.chartData}
-                                />
-                            </div>
-                            <ChartLegend
-                                orientation={"vertical"}
-                                data={producer.chartLegend}
-                                rowGutter={-8} gutter={20}
-                                itemsPerRow={2}
-                                height={80} width={200}
-                            />
-                        </div>
+                        {producer.chartData != null && producer.chartLegend != null ? o.renderChart(producer) : "" }
                     </DataListCell>
                 </DataListItem>
             );

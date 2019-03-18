@@ -111,8 +111,7 @@ func (c *MetricsClient) QueryMap(ctx context.Context, query string) (map[string]
 		var result = make(map[string]float64)
 		for _, e := range v {
 			code := string(e.Metric["code"])
-			f := float64(e.Value)
-			result[code] = f
+			result[code] = float64(e.Value)
 		}
 		return result, nil
 	default:
