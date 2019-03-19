@@ -84,6 +84,9 @@ class Home extends React.Component {
         if (tenant.consumers == null) {
             return
         }
+
+        const o = this
+
         return tenant.consumers.map(function (consumer, i) {
             return (
                 <DataListItem>
@@ -100,7 +103,7 @@ class Home extends React.Component {
                     <DataListCell>
                         <AngleDoubleDownIcon/>&nbsp;
                         <strong title="msgs/s" data-toggle="tooltip" data-placement="top">
-                            {(consumer.messagesPerSecond != null) ? consumer.messagesPerSecond.toFixed(0) : "␀"} received
+                            {o.renderSingleValue(consumer.messagesPerSecond, "msgs/s")}
                         </strong>
                     </DataListCell>
                     <DataListCell>&nbsp;</DataListCell>
@@ -110,7 +113,7 @@ class Home extends React.Component {
         })
     }
 
-    renderChart(producer) {
+    renderErrorChart(producer) {
         return (<div className="chart-inline">
             <div>
                 <ChartPie
@@ -130,6 +133,39 @@ class Home extends React.Component {
                 height={80} width={200}
             />
         </div>)
+    }
+
+    renderConnectionChart(producer) {
+        return (<div className="chart-inline">
+            <div>
+                <ChartPie
+                    animate={{duration: 500}}
+                    containerComponent={<ChartContainer responsive={false}/>}
+                    labels={datum => `${datum.x}: ${datum.y}`}
+                    height={80} width={80}
+                    padding={10}
+                    data={[
+                        {"x": "connected", "y": producer.connectionsEstablished},
+                        {"x": "disconnected", "y": producer.connectionsConfigured - producer.connectionsEstablished},
+                    ]}
+                />
+            </div>
+            <ChartLegend
+                orientation={"vertical"}
+                data={[{"name": "connected"}, {"name": "disconnected"}]}
+                rowGutter={-8} gutter={20}
+                itemsPerRow={2}
+                height={80} width={200}
+            />
+        </div>)
+    }
+
+    renderSingleValue(value, tooltip) {
+        return (<span
+            title={tooltip} data-toggle="tooltip"
+            data-placement="top">
+            {(value != null) ? value.toFixed(0) : "␀"}
+        </span>)
     }
 
     renderProducers(tenant) {
@@ -157,24 +193,25 @@ class Home extends React.Component {
                     <DataListCell>
                         <AngleDoubleUpIcon/>&nbsp;
                         <strong>
-                            <span title="msgs/s" data-toggle="tooltip" data-placement="top">
-                                {(producer.messagesPerSecondSent != null) ? producer.messagesPerSecondSent.toFixed(0) : "␀"} sent</span>
+                            {o.renderSingleValue(producer.messagesPerSecondSent, "msgs/s")}
                         </strong>
                     </DataListCell>
                     <DataListCell>
                         <ClockIcon/>&nbsp;
                         <strong>
-                            <span
-                                title="msgs/s configured" data-toggle="tooltip"
-                                data-placement="top">{producer.messagesPerSecondConfigured}</span>&nbsp;→&nbsp;
-                            <span
-                                title="msgs/s scheduled" data-toggle="tooltip"
-                                data-placement="top">{(producer.messagesPerSecondScheduled != null) ? producer.messagesPerSecondScheduled.toFixed(0) : "␀"}</span>
+                            {o.renderSingleValue(producer.messagesPerSecondConfigured, "msgs/s configured")}&nbsp;→&nbsp;
+                            {o.renderSingleValue(producer.messagesPerSecondScheduled, "msgs/s scheduled")}
                         </strong>
                     </DataListCell>
-                    <DataListCell className="chart-cell" width={2}>
-                        {producer.chartData != null && producer.chartLegend != null ? o.renderChart(producer) : "" }
-                    </DataListCell>
+                        { producer.protocol == "mqtt" ?
+                            <DataListCell className="chart-cell" width={2}>
+                                {o.renderConnectionChart(producer)}
+                            </DataListCell>
+                            :
+                            <DataListCell className="chart-cell" width={2}>
+                                {producer.chartData != null && producer.chartLegend != null ? o.renderErrorChart(producer) : "" }
+                            </DataListCell>
+                    }
                 </DataListItem>
             );
         })

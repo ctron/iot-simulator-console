@@ -28,7 +28,7 @@ func isProducer(dc *v1.DeploymentConfig) bool {
 	return dc.Labels["iot.simulator.app"] == "producer"
 }
 
-func calcConfiguredMessagesPerSecond(dc *v1.DeploymentConfig) *float64 {
+func calcConfiguredMessagesPerSecond(dc *v1.DeploymentConfig) (mpsConfigured *float64, connectionsConfigured *float64) {
 
 	var numDevices *float64
 	var period *float64
@@ -53,14 +53,15 @@ func calcConfiguredMessagesPerSecond(dc *v1.DeploymentConfig) *float64 {
 	}
 
 	if numDevices != nil && period != nil {
-		f := (*numDevices) * (1000.0 / (*period)) * float64(dc.Spec.Replicas)
-		if math.IsNaN(f) {
-			return nil
+		cons := (*numDevices) * float64(dc.Spec.Replicas)
+		msgs := (*numDevices) * (1000.0 / (*period)) * float64(dc.Spec.Replicas)
+		if math.IsNaN(msgs) {
+			return nil, nil
 		}
-		return &f
+		return &msgs, &cons
 	}
 
-	return nil
+	return nil, nil
 
 }
 
@@ -113,6 +114,14 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		log.Warnf("Failed to query msg/s errored: %v", err)
 	}
 
+	conEst, err := c.metricsClient.QuerySingle(ctx,
+		fmt.Sprintf(`sum(connections{type="%s",tenant="%s",protocol="%s"})`,
+			component.Type, tenant.Name, protocol))
+
+	if err != nil {
+		log.Warnf("Failed to query connections established: %v", err)
+	}
+
 	var chartData []ChartEntry
 	if mpsSent != nil && mpsErrored != nil {
 		chartData = []ChartEntry{
@@ -131,16 +140,23 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		}
 	}
 
+	mpsCfg, conCfg := calcConfiguredMessagesPerSecond(dc)
+
 	tenant.Producers = append(tenant.Producers, Producer{
-		Component:                   component,
-		Protocol:                    protocol,
-		MessagesPerSecondConfigured: calcConfiguredMessagesPerSecond(dc),
+		Component: component,
+		Protocol:  protocol,
+
+		MessagesPerSecondConfigured: mpsCfg,
 		MessagesPerSecondScheduled:  mpsScheduled,
 		MessagesPerSecondSent:       mpsSent,
 		MessagesPerSecondFailed:     mpsFailed,
 		MessagesPerSecondErrored:    sum(mpsErrored),
-		ChartData:                   chartData,
-		ChartLegend:                 makeLegend(chartData),
+
+		ConnectionsConfigured:  conCfg,
+		ConnectionsEstablished: conEst,
+
+		ChartData:   chartData,
+		ChartLegend: makeLegend(chartData),
 	})
 }
 
