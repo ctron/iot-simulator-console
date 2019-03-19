@@ -40,7 +40,6 @@ class App extends React.Component {
             [BackgroundImageSrc.filter]: backgroundFilter + "#image_overlay",
         }
         const Header = (<PageHeader
-            logo="IoT Simulator"
             logo={<Brand alt="IoT Simulator" src={brandImg}/>}
         />)
 
@@ -212,7 +211,7 @@ class Home extends React.Component {
                             {o.renderSingleValue(producer.messagesPerSecondScheduled, "msgs/s scheduled")}
                         </strong>
                     </DataListCell>
-                        { producer.protocol == "mqtt" ?
+                        { producer.protocol === "mqtt" ?
                             <DataListCell className="chart-cell" width={2}>
                                 {o.renderConnectionChart(producer)}
                             </DataListCell>
