@@ -37,9 +37,7 @@ func calcConfiguredMessagesPerSecond(dc *v1.DeploymentConfig) *float64 {
 
 		for _, e := range c.Env {
 			switch e.Name {
-			case "TELEMETRY_MS":
-				fallthrough
-			case "EVENT_MS":
+			case "PERIOD_MS":
 				if v, err := strconv.ParseFloat(e.Value, 64); err == nil {
 					if v > 0.0 {
 						period = &v
