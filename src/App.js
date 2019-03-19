@@ -20,7 +20,12 @@ import {
 import "./App.css"
 import brandImg from "./iot-simulator.svg"
 
-import backgroundLg from "./assets/images/bg_lg.jpg"
+import backgroundLg from "./assets/images/background_1200.jpg"
+import backgroundSm from "./assets/images/background_768.jpg"
+import backgroundXs from "./assets/images/background_576.jpg"
+import backgroundSm2x from "./assets/images/background_768@2x.jpg"
+import backgroundXs2x from "./assets/images/background_576@2x.jpg"
+
 import backgroundFilter from "./assets/images/background-filter.svg"
 
 class App extends React.Component {
@@ -28,6 +33,10 @@ class App extends React.Component {
     render() {
         const background = {
             [BackgroundImageSrc.lg]: backgroundLg,
+            [BackgroundImageSrc.sm]: backgroundSm,
+            [BackgroundImageSrc.sm2x]: backgroundSm2x,
+            [BackgroundImageSrc.xs]: backgroundXs,
+            [BackgroundImageSrc.xs2x]: backgroundXs2x,
             [BackgroundImageSrc.filter]: backgroundFilter + "#image_overlay",
         }
         const Header = (<PageHeader
