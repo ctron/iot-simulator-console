@@ -16,13 +16,15 @@ package metrics
 import (
 	"context"
 	"fmt"
-	"github.com/prometheus/common/log"
 	"time"
+
+	"github.com/prometheus/common/log"
+
+	"os"
 
 	promapi "github.com/prometheus/client_golang/api"
 	promv1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	prommodel "github.com/prometheus/common/model"
-	"os"
 )
 
 type MetricsClient struct {
@@ -86,9 +88,8 @@ func (c *MetricsClient) Query(ctx context.Context, query string) (*prommodel.Val
 	log.Info("Query: ", query)
 
 	s := time.Now()
-	e := s.Add(-time.Minute)
 
-	val, err := c.api.Query(ctx, query, e)
+	val, err := c.api.Query(ctx, query, s)
 	if err != nil {
 		return nil, err
 	}
