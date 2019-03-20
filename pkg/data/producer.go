@@ -142,6 +142,13 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 
 	mpsCfg, conCfg := calcConfiguredMessagesPerSecond(dc)
 
+	switch protocol {
+	case "mqtt":
+		component.Good = conCfg != nil && conEst != nil && *conCfg == *conEst
+	default:
+		component.Good = mpsFailed != nil && *mpsFailed == 0
+	}
+
 	tenant.Producers = append(tenant.Producers, Producer{
 		Component: component,
 		Protocol:  protocol,
@@ -158,6 +165,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		ChartData:   chartData,
 		ChartLegend: makeLegend(chartData),
 	})
+
 }
 
 func sum(data map[string]float64) *float64 {

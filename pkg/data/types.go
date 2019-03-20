@@ -26,6 +26,7 @@ type Tenant struct {
 type Component struct {
 	Type     string `json:"type"`
 	Replicas uint32 `json:"replicas"`
+	Good     bool   `json:"good"`
 }
 
 type Consumer struct {

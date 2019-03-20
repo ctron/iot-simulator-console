@@ -5,7 +5,7 @@ import {
     BackgroundImage, BackgroundImageSrc,
     Page, PageHeader, PageSection,
     DataList, DataListItem, DataListCell,
-    Title, Brand,
+    Title, Brand, Alert,
 } from "@patternfly/react-core";
 
 import {
@@ -14,7 +14,8 @@ import {
 } from "@patternfly/react-charts";
 
 import {
-    CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, OkIcon, ErrorCircleOIcon, ClockIcon, ExclamationTriangleIcon
+    CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, OkIcon, ErrorCircleOIcon, ClockIcon, ExclamationTriangleIcon,
+    WarningTriangleIcon, CheckCircleIcon
 } from '@patternfly/react-icons';
 
 import "./App.css"
@@ -43,14 +44,16 @@ class App extends React.Component {
             logo={<Brand alt="IoT Simulator" src={brandImg}/>}
         />)
 
-        return <React.Fragment>
-            <BackgroundImage src={background}/>
-            <Page header={Header}>
-                <PageSection>
-                    <Home/>
-                </PageSection>
-            </Page>
-        </React.Fragment>
+        return (
+                <React.Fragment>
+                    <BackgroundImage src={background}/>
+                    <Page header={Header}>
+                        <PageSection>
+                            <Home/>
+                        </PageSection>
+                    </Page>
+                </React.Fragment>
+            )
     }
 }
 
@@ -99,10 +102,7 @@ class Home extends React.Component {
             return (
                 <DataListItem>
                     <DataListCell>
-                        {(consumer.messagesPerSecond != null && consumer.messagesPerSecond > 0) ? <OkIcon/> :
-                            <ErrorCircleOIcon/>}&nbsp;consumer
-                    </DataListCell>
-                    <DataListCell>
+                        {o.renderGood(consumer)}&nbsp;
                         {consumer.type}
                     </DataListCell>
                     <DataListCell>
@@ -176,6 +176,12 @@ class Home extends React.Component {
         </span>)
     }
 
+    renderGood(common) {
+        return (
+            <div className="state-indicator">{common.good ? <CheckCircleIcon/> : <ExclamationTriangleIcon/>}</div>
+        )
+    }
+
     renderProducers(tenant) {
 
         const o = this
@@ -187,11 +193,7 @@ class Home extends React.Component {
             return (
                 <DataListItem className="chart-list">
                     <DataListCell>
-                        {(producer.messagesPerSecondFailed != null && producer.messagesPerSecondFailed <= 0) ?
-                            <OkIcon/> :
-                            <ErrorCircleOIcon/>}&nbsp;producer
-                    </DataListCell>
-                    <DataListCell>
+                        {o.renderGood(producer)}&nbsp;
                         {producer.type + " / " + producer.protocol}
                     </DataListCell>
                     <DataListCell>

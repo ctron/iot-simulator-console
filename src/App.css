@@ -11,3 +11,7 @@
     display: inline-flex;
 }
 
+.state-indicator {
+    display: inline;
+    margin-right: 8px;
+}

@@ -44,6 +44,8 @@ func (c *controller) fillConsumer(tenants *map[string]*Tenant, dc *v1.Deployment
 		log.Warn("Failed to query metrics ", err.Error())
 	}
 
+	component.Good = mps != nil && *mps > 0
+
 	tenant.Consumers = append(tenant.Consumers, Consumer{
 		Component:         component,
 		MessagesPerSecond: mps,

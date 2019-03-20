@@ -12,6 +12,9 @@
     "react-scripts": "^2.1.8",
     "redux": "^3"
   },
+  "devDependencies": {
+    "typescript": "^3.3.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
