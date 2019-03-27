@@ -5,6 +5,10 @@ LABEL maintainer="Jens Reimann <jreimann@redhat.com>"
 
 EXPOSE 8080
 
+RUN dnf -y update
+RUN dnf -y install nodejs golang
+RUN go version
+
 ENV \
     GOPATH=/go
 
@@ -12,9 +16,6 @@ RUN mkdir -p /go/src/github.com/ctron
 ADD . /go/src/github.com/ctron/iot-simulator-console
 
 RUN \
-    dnf -y update && \
-    dnf -y install nodejs golang && \
-    go version && \
     cd /go/src/github.com/ctron/iot-simulator-console && \
     GO111MODULE=on go mod vendor && \
     npm install && \
@@ -23,9 +24,6 @@ RUN \
     go build -o /iot-simulator-console . && \
     cd .. && \
     mv build / && \
-    echo "Clean up" && \
-    rm -Rf go && \
-    dnf -y history undo last && dnf -y clean all && \
     true
 
 ENTRYPOINT /iot-simulator-console
