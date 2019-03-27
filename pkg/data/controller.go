@@ -22,7 +22,6 @@ import (
 
 type controller struct {
 	namespace     string
-	simulator     string
 	client        *kubernetes.Clientset
 	appsclient    *appsv1.AppsV1Client
 	metricsClient *metrics.MetricsClient
@@ -49,9 +48,7 @@ func registerTenant(tenants *map[string]*Tenant, tenantName string) *Tenant {
 func (c *controller) BuildOverview() (*Overview, error) {
 
 	items, err := c.appsclient.DeploymentConfigs(c.namespace).
-		List(metav1.ListOptions{
-			LabelSelector: "iot.simulator=" + c.simulator,
-		})
+		List(metav1.ListOptions{})
 
 	if err != nil {
 		return nil, err
