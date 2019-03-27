@@ -28,10 +28,9 @@ type controller struct {
 	metricsClient *metrics.MetricsClient
 }
 
-func NewController(namespace string, simulator string, client *kubernetes.Clientset, appsclient *appsv1.AppsV1Client, metricsClient *metrics.MetricsClient) *controller {
+func NewController(namespace string, client *kubernetes.Clientset, appsclient *appsv1.AppsV1Client, metricsClient *metrics.MetricsClient) *controller {
 	return &controller{
 		namespace:     namespace,
-		simulator:     simulator,
 		client:        client,
 		appsclient:    appsclient,
 		metricsClient: metricsClient,

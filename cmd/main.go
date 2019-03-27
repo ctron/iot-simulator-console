@@ -15,14 +15,15 @@ package main
 
 import (
 	"flag"
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/ctron/iot-simulator-console/pkg/data"
 	"github.com/ctron/iot-simulator-console/pkg/metrics"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"k8s.io/client-go/kubernetes"
-	"log"
-	"net/http"
-	"os"
 
 	appsv1 "github.com/openshift/client-go/apps/clientset/versioned/typed/apps/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -62,10 +63,7 @@ func main() {
 
 	router := gin.Default()
 
-	simulator := os.Getenv("SIMULATOR_ID")
-	log.Println("Running for simulator: ", simulator)
-
-	controller := data.NewController(namespace, simulator, client, appsclient, metricsClient)
+	controller := data.NewController(namespace, client, appsclient, metricsClient)
 
 	router.Use(
 		static.Serve(
