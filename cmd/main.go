@@ -33,6 +33,7 @@ func main() {
 	flag.Parse()
 
 	namespace, _ := os.LookupEnv("NAMESPACE")
+	log.Printf("Running for namespace: %s", namespace)
 
 	promcfg, err := metrics.BuildConfiguration(namespace)
 	if err != nil {
