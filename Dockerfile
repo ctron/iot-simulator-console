@@ -16,7 +16,6 @@ RUN \
     dnf -y install nodejs golang && \
     go version && \
     cd /go/src/github.com/ctron/iot-simulator-console && \
-    GO111MODULE=on go mod vendor && \
     npm install && \
     npm run build && \
     cd cmd && \
