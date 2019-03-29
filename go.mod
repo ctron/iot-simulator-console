@@ -3,6 +3,7 @@ module github.com/ctron/iot-simulator-console
 require (
 	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc // indirect
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
+	github.com/ctron/operator-tools v0.1.2
 	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 // indirect
 	github.com/gin-gonic/contrib v0.0.0-20181101072842-54170a7b0b4b
 	github.com/gin-gonic/gin v1.3.0
@@ -22,7 +23,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/onsi/ginkgo v1.7.0 // indirect
 	github.com/onsi/gomega v1.4.3 // indirect
-	github.com/openshift/api v3.9.0+incompatible
+	github.com/openshift/api v3.9.0+incompatible // indirect
 	github.com/openshift/client-go v0.0.0-20180830153425-431ec9a26e50
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/errors v0.8.0 // indirect
@@ -46,7 +47,7 @@ require (
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
-	k8s.io/api v0.0.0-20181130031204-d04500c8c3dd // indirect
+	k8s.io/api v0.0.0-20181130031204-d04500c8c3dd
 	k8s.io/apimachinery v0.0.0-20181211025822-57dc7e687b54
 	k8s.io/client-go v0.0.0-20181204000744-e64494209f55
 	k8s.io/klog v0.1.0 // indirect

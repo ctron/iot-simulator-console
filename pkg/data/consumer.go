@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Red Hat Inc
+ * Copyright (c) 2018, 2019 Red Hat Inc
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -17,21 +17,22 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/openshift/api/apps/v1"
 	"github.com/prometheus/common/log"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func isConsumer(dc *v1.DeploymentConfig) bool {
-	return dc.Labels["iot.simulator.message.type"] != "" &&
-		dc.Labels["iot.simulator.app"] == "consumer"
+func isConsumer(obj metav1.Object) bool {
+	labels := obj.GetLabels()
+	return labels["iot.simulator.message.type"] != "" &&
+		labels["iot.simulator.app"] == "consumer"
 }
 
-func (c *controller) fillConsumer(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) {
-	if !isConsumer(dc) {
+func (c *controller) fillConsumer(tenants *map[string]*Tenant, obj metav1.Object, replicas int) {
+	if !isConsumer(obj) {
 		return
 	}
 
-	tenant, component := c.fillCommon(tenants, dc)
+	tenant, component := c.fillCommon(tenants, obj, replicas)
 	if tenant == nil {
 		return
 	}

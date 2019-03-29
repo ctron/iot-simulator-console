@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Red Hat Inc
+ * Copyright (c) 2018, 2019 Red Hat Inc
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -14,24 +14,25 @@
 package data
 
 import (
-	"github.com/openshift/api/apps/v1"
 	"github.com/prometheus/common/log"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func getMessageType(dc *v1.DeploymentConfig) string {
-	return dc.Labels["iot.simulator.message.type"]
+func getMessageType(obj metav1.Object) string {
+	labels := obj.GetLabels()
+	return labels["iot.simulator.message.type"]
 }
 
-func (c *controller) fillCommon(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) (*Tenant, Component) {
+func (c *controller) fillCommon(tenants *map[string]*Tenant, obj metav1.Object, replicas int) (*Tenant, Component) {
 
-	tenantName := dc.Spec.Template.Labels["iot.simulator.tenant"]
+	tenantName := obj.GetLabels()["iot.simulator.tenant"]
 	if tenantName == "" {
 		return nil, Component{}
 	}
 
 	tenant := registerTenant(tenants, tenantName)
 
-	messageType := getMessageType(dc)
+	messageType := getMessageType(obj)
 	if messageType == "" {
 		log.Warn("Missing message type")
 		return nil, Component{}
@@ -39,6 +40,6 @@ func (c *controller) fillCommon(tenants *map[string]*Tenant, dc *v1.DeploymentCo
 
 	return tenant, Component{
 		Type:     messageType,
-		Replicas: uint32(dc.Spec.Replicas),
+		Replicas: uint32(replicas),
 	}
 }

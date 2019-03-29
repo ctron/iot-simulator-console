@@ -15,7 +15,9 @@ package data
 
 import (
 	"github.com/ctron/iot-simulator-console/pkg/metrics"
+	"github.com/ctron/operator-tools/pkg/install/openshift"
 	appsv1 "github.com/openshift/client-go/apps/clientset/versioned/typed/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 )
@@ -45,22 +47,63 @@ func registerTenant(tenants *map[string]*Tenant, tenantName string) *Tenant {
 	return tenant
 }
 
-func (c *controller) BuildOverview() (*Overview, error) {
+type OverviewProcessor func(obj metav1.Object, pod *corev1.PodTemplateSpec, replicas int)
+
+func (c *controller) ProcessDeploymentConfigs(processor OverviewProcessor) error {
 
 	items, err := c.appsclient.DeploymentConfigs(c.namespace).
 		List(metav1.ListOptions{})
 
 	if err != nil {
-		return nil, err
+		return err
 	}
+
+	for _, i := range items.Items {
+		processor(&i, i.Spec.Template, int(i.Spec.Replicas))
+	}
+
+	return nil
+}
+
+func (c *controller) ProcessDeployments(processor OverviewProcessor) error {
+
+	items, err := c.client.AppsV1().Deployments(c.namespace).
+		List(metav1.ListOptions{})
+
+	if err != nil {
+		return err
+	}
+
+	for _, i := range items.Items {
+		var r int
+		if i.Spec.Replicas != nil {
+			r = int(*i.Spec.Replicas)
+		} else {
+			r = 1
+		}
+		processor(&i, &i.Spec.Template, r)
+	}
+
+	return nil
+}
+
+func (c *controller) BuildOverview() (*Overview, error) {
 
 	tenants := map[string]*Tenant{}
 
-	for _, i := range items.Items {
+	fn := func(obj metav1.Object, pod *corev1.PodTemplateSpec, replicas int) {
+		c.fillConsumer(&tenants, obj, replicas)
+		c.fillProducer(&tenants, obj, pod, replicas)
+	}
 
-		c.fillConsumer(&tenants, &i)
-		c.fillProducer(&tenants, &i)
-
+	if openshift.IsOpenshift() {
+		if err := c.ProcessDeploymentConfigs(fn); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := c.ProcessDeployments(fn); err != nil {
+			return nil, err
+		}
 	}
 
 	return &Overview{

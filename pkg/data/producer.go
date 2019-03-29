@@ -20,63 +20,29 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/openshift/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+
 	"github.com/prometheus/common/log"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func isProducer(dc *v1.DeploymentConfig) bool {
-	return dc.Labels["iot.simulator.app"] == "producer"
+func isProducer(obj metav1.Object) bool {
+	labels := obj.GetLabels()
+	return labels["iot.simulator.app"] == "producer"
 }
 
-func calcConfiguredMessagesPerSecond(dc *v1.DeploymentConfig) (mpsConfigured *float64, connectionsConfigured *float64) {
-
-	var numDevices *float64
-	var period *float64
-
-	for _, c := range dc.Spec.Template.Spec.Containers {
-
-		for _, e := range c.Env {
-			switch e.Name {
-			case "PERIOD_MS":
-				if v, err := strconv.ParseFloat(e.Value, 64); err == nil {
-					if v > 0.0 {
-						period = &v
-					}
-				}
-			case "NUM_DEVICES":
-				if v, err := strconv.ParseFloat(e.Value, 64); err == nil {
-					numDevices = &v
-				}
-			default:
-			}
-		}
-	}
-
-	if numDevices != nil && period != nil {
-		cons := (*numDevices) * float64(dc.Spec.Replicas)
-		msgs := (*numDevices) * (1000.0 / (*period)) * float64(dc.Spec.Replicas)
-		if math.IsNaN(msgs) {
-			return nil, nil
-		}
-		return &msgs, &cons
-	}
-
-	return nil, nil
-
-}
-
-func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.DeploymentConfig) {
-	if !isProducer(dc) {
+func (c *controller) fillProducer(tenants *map[string]*Tenant, obj metav1.Object, pod *corev1.PodTemplateSpec, replicas int) {
+	if !isProducer(obj) {
 		return
 	}
 
-	tenant, component := c.fillCommon(tenants, dc)
+	tenant, component := c.fillCommon(tenants, obj, replicas)
 
 	if tenant == nil {
 		return
 	}
 
-	protocol := dc.Labels["iot.simulator.producer.protocol"]
+	protocol := obj.GetLabels()["iot.simulator.producer.protocol"]
 	if protocol == "" {
 		return
 	}
@@ -140,7 +106,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		}
 	}
 
-	mpsCfg, conCfg := calcConfiguredMessagesPerSecond(dc)
+	mpsCfg, conCfg := calcConfiguredMessagesPerSecond(pod, replicas)
 
 	switch protocol {
 	case "mqtt":
@@ -165,6 +131,43 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, dc *v1.Deployment
 		ChartData:   chartData,
 		ChartLegend: makeLegend(chartData),
 	})
+
+}
+
+func calcConfiguredMessagesPerSecond(pod *corev1.PodTemplateSpec, replicas int) (mpsConfigured *float64, connectionsConfigured *float64) {
+
+	var numDevices *float64
+	var period *float64
+
+	for _, c := range pod.Spec.Containers {
+
+		for _, e := range c.Env {
+			switch e.Name {
+			case "PERIOD_MS":
+				if v, err := strconv.ParseFloat(e.Value, 64); err == nil {
+					if v > 0.0 {
+						period = &v
+					}
+				}
+			case "NUM_DEVICES":
+				if v, err := strconv.ParseFloat(e.Value, 64); err == nil {
+					numDevices = &v
+				}
+			default:
+			}
+		}
+	}
+
+	if numDevices != nil && period != nil {
+		cons := (*numDevices) * float64(replicas)
+		msgs := (*numDevices) * (1000.0 / (*period)) * float64(replicas)
+		if math.IsNaN(msgs) {
+			return nil, nil
+		}
+		return &msgs, &cons
+	}
+
+	return nil, nil
 
 }
 
