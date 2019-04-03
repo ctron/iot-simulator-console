@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from "react";
 
 import {
@@ -9,13 +8,13 @@ import {
 } from "@patternfly/react-core";
 
 import {
-    ChartDonut, ChartBar, ChartLabel, ChartLegend, ChartTheme, Chart, ChartGroup, ChartPie,
+    ChartBar, ChartLabel, ChartLegend, ChartTheme, Chart, ChartGroup, ChartPie,
     ChartContainer,
 } from "@patternfly/react-charts";
 
 import {
-    CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, OkIcon, ErrorCircleOIcon, ClockIcon, ExclamationTriangleIcon,
-    WarningTriangleIcon, CheckCircleIcon
+    CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, ClockIcon, ExclamationTriangleIcon,
+    CheckCircleIcon
 } from '@patternfly/react-icons';
 
 import "./App.css"
@@ -45,15 +44,15 @@ class App extends React.Component {
         />)
 
         return (
-                <React.Fragment>
-                    <BackgroundImage src={background}/>
-                    <Page header={Header}>
-                        <PageSection>
-                            <Home/>
-                        </PageSection>
-                    </Page>
-                </React.Fragment>
-            )
+            <React.Fragment>
+                <BackgroundImage src={background}/>
+                <Page header={Header}>
+                    <PageSection>
+                        <Home/>
+                    </PageSection>
+                </Page>
+            </React.Fragment>
+        )
     }
 }
 
@@ -213,14 +212,14 @@ class Home extends React.Component {
                             {o.renderSingleValue(producer.messagesPerSecondScheduled, "msgs/s scheduled")}
                         </strong>
                     </DataListCell>
-                        { producer.protocol === "mqtt" ?
-                            <DataListCell className="chart-cell" width={2}>
-                                {o.renderConnectionChart(producer)}
-                            </DataListCell>
-                            :
-                            <DataListCell className="chart-cell" width={2}>
-                                {producer.chartData != null && producer.chartLegend != null ? o.renderErrorChart(producer) : "" }
-                            </DataListCell>
+                    {producer.protocol === "mqtt" ?
+                        <DataListCell className="chart-cell" width={2}>
+                            {o.renderConnectionChart(producer)}
+                        </DataListCell>
+                        :
+                        <DataListCell className="chart-cell" width={2}>
+                            {producer.chartData != null && producer.chartLegend != null ? o.renderErrorChart(producer) : ""}
+                        </DataListCell>
                     }
                 </DataListItem>
             );
