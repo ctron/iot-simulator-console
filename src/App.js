@@ -90,12 +90,19 @@ class Home extends React.Component {
         clearInterval(this.interval);
     }
 
+    static fixedNumber(n, fractionDigits) {
+        if (n == null || isNaN(n)) {
+            return "␀"
+        }
+        return n.toFixed(fractionDigits)
+    }
+
     renderConsumers(tenant) {
         if (tenant.consumers == null) {
             return
         }
 
-        const o = this
+        const o = this;
 
         return tenant.consumers.map(function (consumer, i) {
             return (
@@ -126,7 +133,7 @@ class Home extends React.Component {
                 <ChartPie
                     animate={{duration: 500}}
                     containerComponent={<ChartContainer responsive={false}/>}
-                    labels={datum => `${datum.x}: ${datum.y}`}
+                    labels={datum => `${datum.x}: ${Home.fixedNumber(datum.y, 0)}`}
                     height={80} width={80}
                     padding={10}
                     data={producer.chartData}
@@ -148,7 +155,7 @@ class Home extends React.Component {
                 <ChartPie
                     animate={{duration: 500}}
                     containerComponent={<ChartContainer responsive={false}/>}
-                    labels={datum => `${datum.x}: ${datum.y}`}
+                    labels={datum => `${datum.x}: ${Home.fixedNumber(datum.y, 0)}`}
                     height={80} width={80}
                     padding={10}
                     data={[
