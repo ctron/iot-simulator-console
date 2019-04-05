@@ -8,8 +8,8 @@ import {
 } from "@patternfly/react-core";
 
 import {
-    ChartBar, ChartLabel, ChartLegend, ChartTheme, Chart, ChartGroup, ChartPie,
-    ChartContainer,
+    ChartArea, ChartBar, ChartLabel, ChartLegend, ChartTheme, Chart, ChartGroup, ChartPie,
+    ChartContainer, ChartVoronoiContainer,
 } from "@patternfly/react-charts";
 
 import {
@@ -57,6 +57,55 @@ class App extends React.Component {
 }
 
 export default App;
+
+class HistoryChart extends React.Component {
+
+    containerRef = React.createRef();
+
+    state = {
+        width: 0
+    };
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({width: this.containerRef.current.clientWidth});
+            window.addEventListener('resize', this.handleResize);
+        });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+
+    getTooltipLabel = datum => `${datum.name}: ${Home.fixedNumber(datum.y, 1)}`;
+
+    handleResize = () => {
+        this.setState({width: this.containerRef.current.clientWidth});
+    };
+
+    render() {
+
+        const {width} = this.state;
+        const container = <ChartVoronoiContainer responsive={false} labels={this.getTooltipLabel}/>;
+
+        const cs = {
+            data: {
+                strokeWidth: 0
+            }
+        }
+
+        return (
+            <div ref={this.containerRef}>
+                <div className="chart-inline chart-overflow">
+                    <ChartGroup containerComponent={container} height={75} width={width} padding={{"top": 5}}>
+                        <ChartArea data={this.props.data} style={cs}/>
+                    </ChartGroup>
+                </div>
+            </div>
+        )
+    }
+
+}
 
 class Home extends React.Component {
 
@@ -117,11 +166,14 @@ class Home extends React.Component {
                     <DataListCell>
                         <AngleDoubleDownIcon/>&nbsp;
                         <strong title="msgs/s" data-toggle="tooltip" data-placement="top">
-                            {o.renderSingleValue(consumer.messagesPerSecond, "msgs/s")}
+                            {o.renderSingleValue(consumer.messagesPerSecond, "msgs/s")}&nbsp;/&nbsp;
+                            {o.renderSingleValueBy(consumer.payloadPerSecond, 1.0 / 1024.0, 1, "KiB/s")}
                         </strong>
                     </DataListCell>
+                    <DataListCell className="chart-cell" width={2}>
+                        <HistoryChart data={consumer.messagesHistory}/>
+                    </DataListCell>
                     <DataListCell>&nbsp;</DataListCell>
-                    <DataListCell width={2}>&nbsp;</DataListCell>
                 </DataListItem>
             )
         })
@@ -182,6 +234,14 @@ class Home extends React.Component {
         </span>)
     }
 
+    renderSingleValueBy(value, factor, fractionDigits, tooltip) {
+        return (<span
+            title={tooltip} data-toggle="tooltip"
+            data-placement="top">
+            {(value != null) ? (value * factor).toFixed(fractionDigits) : "␀"}
+        </span>)
+    }
+
     renderGood(common) {
         return (
             <div className="state-indicator">{common.good ? <CheckCircleIcon/> : <ExclamationTriangleIcon/>}</div>
@@ -190,7 +250,7 @@ class Home extends React.Component {
 
     renderProducers(tenant) {
 
-        const o = this
+        const o = this;
 
         if (tenant.producers == null) {
             return

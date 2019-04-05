@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ctron/iot-simulator-console/pkg/data"
+
 	"github.com/prometheus/common/log"
 
 	"os"
@@ -97,6 +99,22 @@ func (c *MetricsClient) Query(ctx context.Context, query string) (*prommodel.Val
 	return &val, nil
 }
 
+func (c *MetricsClient) QueryRange(ctx context.Context, query string, duration time.Duration, step time.Duration) (*prommodel.Value, error) {
+	log.Info("QueryRange: ", query)
+
+	e := time.Now()
+	s := e.Add(-duration)
+
+	r := promv1.Range{Start: s, End: e, Step: step}
+
+	val, err := c.api.QueryRange(ctx, query, r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &val, nil
+}
+
 func (c *MetricsClient) QueryMap(ctx context.Context, query string) (map[string]float64, error) {
 
 	val, err := c.Query(ctx, query)
@@ -140,6 +158,48 @@ func (c *MetricsClient) QuerySingle(ctx context.Context, query string) (*float64
 		} else {
 			return nil, fmt.Errorf("missing values in vector result")
 		}
+	default:
+		return nil, fmt.Errorf("unknown result type: %v / %v", (*val).Type().String(), (*val).String())
+	}
+
+}
+
+func (c *MetricsClient) QueryArray(ctx context.Context, duration time.Duration, step time.Duration, query string, overrideLabel []string) (*[]data.HistoryEntry, error) {
+
+	val, err := c.QueryRange(ctx, query, duration, step)
+	if err != nil {
+		return nil, err
+	}
+
+	switch v := (*val).(type) {
+
+	case prommodel.Matrix:
+		log.Info("Query result - matrix: ", v)
+
+		l := 0
+		for _, m := range v {
+			l += len(m.Values)
+		}
+
+		f := make([]data.HistoryEntry, l)
+		i := 0
+		for x, m := range v {
+
+			var label = m.Metric.String()
+			if overrideLabel != nil && len(overrideLabel) > x {
+				label = overrideLabel[x]
+			}
+
+			for _, sp := range m.Values {
+				f[i].Name = label
+				f[i].X = float64(sp.Timestamp.Unix())
+				f[i].Y = float64(sp.Value)
+				i++
+			}
+		}
+
+		return &f, nil
+
 	default:
 		return nil, fmt.Errorf("unknown result type: %v / %v", (*val).Type().String(), (*val).String())
 	}

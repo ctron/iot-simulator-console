@@ -11,9 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package data
+package handler
 
 import (
+	"github.com/ctron/iot-simulator-console/pkg/data"
 	"github.com/ctron/iot-simulator-console/pkg/metrics"
 	"github.com/ctron/operator-tools/pkg/install/openshift"
 	appsv1 "github.com/openshift/client-go/apps/clientset/versioned/typed/apps/v1"
@@ -38,10 +39,10 @@ func NewController(namespace string, client *kubernetes.Clientset, appsclient *a
 	}
 }
 
-func registerTenant(tenants *map[string]*Tenant, tenantName string) *Tenant {
+func registerTenant(tenants *map[string]*data.Tenant, tenantName string) *data.Tenant {
 	tenant, ok := (*tenants)[tenantName]
 	if !ok {
-		tenant = &Tenant{Name: tenantName}
+		tenant = &data.Tenant{Name: tenantName}
 		(*tenants)[tenantName] = tenant
 	}
 	return tenant
@@ -87,9 +88,9 @@ func (c *controller) ProcessDeployments(processor OverviewProcessor) error {
 	return nil
 }
 
-func (c *controller) BuildOverview() (*Overview, error) {
+func (c *controller) BuildOverview() (*data.Overview, error) {
 
-	tenants := map[string]*Tenant{}
+	tenants := map[string]*data.Tenant{}
 
 	fn := func(obj metav1.Object, pod *corev1.PodTemplateSpec, replicas int) {
 		c.fillConsumer(&tenants, obj, replicas)
@@ -106,13 +107,13 @@ func (c *controller) BuildOverview() (*Overview, error) {
 		}
 	}
 
-	return &Overview{
+	return &data.Overview{
 		Tenants: makeTenants(tenants),
 	}, nil
 }
 
-func makeTenants(t map[string]*Tenant) []Tenant {
-	var result = make([]Tenant, 0, len(t))
+func makeTenants(t map[string]*data.Tenant) []data.Tenant {
+	var result = make([]data.Tenant, 0, len(t))
 	for _, v := range t {
 		result = append(result, *v)
 	}

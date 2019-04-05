@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package data
+package handler
 
 import (
 	"context"
@@ -22,6 +22,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
+	"github.com/ctron/iot-simulator-console/pkg/data"
 	"github.com/prometheus/common/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,7 +32,7 @@ func isProducer(obj metav1.Object) bool {
 	return labels["iot.simulator.app"] == "producer"
 }
 
-func (c *controller) fillProducer(tenants *map[string]*Tenant, obj metav1.Object, pod *corev1.PodTemplateSpec, replicas int) {
+func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.Object, pod *corev1.PodTemplateSpec, replicas int) {
 	if !isProducer(obj) {
 		return
 	}
@@ -88,9 +89,9 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, obj metav1.Object
 		log.Warnf("Failed to query connections established: %v", err)
 	}
 
-	var chartData []ChartEntry
+	var chartData []data.ChartEntry
 	if mpsSent != nil && mpsErrored != nil {
-		chartData = []ChartEntry{
+		chartData = []data.ChartEntry{
 			{Key: "Success", Value: *mpsSent},
 		}
 		keys := make([]string, 0, len(mpsErrored))
@@ -101,7 +102,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, obj metav1.Object
 		for _, k := range keys {
 			v := mpsErrored[k]
 			if v > 0 {
-				chartData = append(chartData, ChartEntry{k, v})
+				chartData = append(chartData, data.ChartEntry{k, v})
 			}
 		}
 	}
@@ -115,7 +116,7 @@ func (c *controller) fillProducer(tenants *map[string]*Tenant, obj metav1.Object
 		component.Good = mpsFailed != nil && *mpsFailed == 0
 	}
 
-	tenant.Producers = append(tenant.Producers, Producer{
+	tenant.Producers = append(tenant.Producers, data.Producer{
 		Component: component,
 		Protocol:  protocol,
 
@@ -185,15 +186,15 @@ func sum(data map[string]float64) *float64 {
 	return &result
 }
 
-func makeLegend(data []ChartEntry) []ChartLegendEntry {
-	if data == nil {
+func makeLegend(d []data.ChartEntry) []data.ChartLegendEntry {
+	if d == nil {
 		return nil
 	}
 
-	result := make([]ChartLegendEntry, len(data))
+	result := make([]data.ChartLegendEntry, len(d))
 
-	for i, e := range data {
-		result[i] = ChartLegendEntry{e.Key}
+	for i, e := range d {
+		result[i] = data.ChartLegendEntry{Name: e.Key}
 	}
 
 	return result

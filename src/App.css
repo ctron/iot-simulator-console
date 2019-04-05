@@ -5,6 +5,7 @@
 .chart-cell {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    align-self: end;
 }
 
 .chart-inline {
@@ -14,4 +15,8 @@
 .state-indicator {
     display: inline;
     margin-right: 8px;
+}
+
+.chart-overflow svg {
+    overflow: visible;
 }

@@ -30,8 +30,18 @@ type Component struct {
 }
 
 type Consumer struct {
-	Component         `json:",inline"`
+	Component `json:",inline"`
+
 	MessagesPerSecond *float64 `json:"messagesPerSecond"`
+	PayloadPerSecond  *float64 `json:"payloadPerSecond"`
+
+	MessagesHistory *[]HistoryEntry `json:"messagesHistory"`
+}
+
+type HistoryEntry struct {
+	Name string  `json:"name"`
+	X    float64 `json:"x"`
+	Y    float64 `json:"y"`
 }
 
 type Producer struct {

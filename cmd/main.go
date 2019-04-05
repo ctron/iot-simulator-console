@@ -19,7 +19,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/ctron/iot-simulator-console/pkg/data"
+	"github.com/ctron/iot-simulator-console/pkg/handler"
+
 	"github.com/ctron/iot-simulator-console/pkg/metrics"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
@@ -64,7 +65,7 @@ func main() {
 
 	router := gin.Default()
 
-	controller := data.NewController(namespace, client, appsclient, metricsClient)
+	controller := handler.NewController(namespace, client, appsclient, metricsClient)
 
 	router.Use(
 		static.Serve(

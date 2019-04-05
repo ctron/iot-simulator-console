@@ -11,9 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package data
+package handler
 
 import (
+	"github.com/ctron/iot-simulator-console/pkg/data"
 	"github.com/prometheus/common/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,11 +24,11 @@ func getMessageType(obj metav1.Object) string {
 	return labels["iot.simulator.message.type"]
 }
 
-func (c *controller) fillCommon(tenants *map[string]*Tenant, obj metav1.Object, replicas int) (*Tenant, Component) {
+func (c *controller) fillCommon(tenants *map[string]*data.Tenant, obj metav1.Object, replicas int) (*data.Tenant, data.Component) {
 
 	tenantName := obj.GetLabels()["iot.simulator.tenant"]
 	if tenantName == "" {
-		return nil, Component{}
+		return nil, data.Component{}
 	}
 
 	tenant := registerTenant(tenants, tenantName)
@@ -35,10 +36,10 @@ func (c *controller) fillCommon(tenants *map[string]*Tenant, obj metav1.Object, 
 	messageType := getMessageType(obj)
 	if messageType == "" {
 		log.Warn("Missing message type")
-		return nil, Component{}
+		return nil, data.Component{}
 	}
 
-	return tenant, Component{
+	return tenant, data.Component{
 		Type:     messageType,
 		Replicas: uint32(replicas),
 	}
