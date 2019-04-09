@@ -1,4 +1,4 @@
-FROM fedora:29
+FROM centos:7
 
 MAINTAINER Jens Reimann <jreimann@redhat.com>
 LABEL maintainer="Jens Reimann <jreimann@redhat.com>"
@@ -12,8 +12,9 @@ RUN mkdir -p /go/src/github.com/ctron
 ADD . /go/src/github.com/ctron/iot-simulator-console
 
 RUN \
-    dnf -y update && \
-    dnf -y install nodejs golang && \
+    yum -y update && \
+    yum -y install epel-release && \
+    yum -y install nodejs golang && \
     go version && \
     cd /go/src/github.com/ctron/iot-simulator-console && \
     npm install && \
@@ -24,7 +25,7 @@ RUN \
     mv build / && \
     echo "Clean up" && \
     rm -Rf go && \
-    dnf -y history undo last && dnf -y clean all && \
+    yum -y history undo last && yum -y clean all && \
     true
 
 ENTRYPOINT /iot-simulator-console
