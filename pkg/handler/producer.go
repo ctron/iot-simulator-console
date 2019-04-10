@@ -138,7 +138,7 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 	case "mqtt":
 		component.Good = conCfg != nil && conEst != nil && *conCfg == *conEst
 	default:
-		component.Good = mpsFailed != nil && *mpsFailed == 0
+		component.Good = isGoodHttp(mpsScheduled, mpsSent, mpsFailed)
 	}
 
 	tenant.Producers = append(tenant.Producers, data.Producer{
@@ -160,6 +160,25 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		ChartLegend: makeLegend(chartData),
 	})
 
+}
+
+func isGoodHttp(mpsScheduled, mpsSent, mpsFailed *float64) bool {
+
+	if mpsScheduled == nil || mpsSent == nil || mpsFailed == nil {
+		return false
+	}
+
+	if *mpsSent < *mpsScheduled*0.95 {
+		// allow 5% miss
+		return false
+	}
+
+	if *mpsFailed > *mpsSent*0.05 {
+		// allow 5% failure
+		return false
+	}
+
+	return true
 }
 
 func calcConfiguredMessagesPerSecond(pod *corev1.PodTemplateSpec, replicas int) (mpsConfigured *float64, connectionsConfigured *float64) {
