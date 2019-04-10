@@ -20,3 +20,10 @@
 .chart-overflow svg {
     overflow: visible;
 }
+
+li.good {
+}
+
+li.failed {
+    box-shadow: -0.5em 0 0 #f0ab00 inset;
+}

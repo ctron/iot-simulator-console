@@ -155,7 +155,7 @@ class Home extends React.Component {
 
         return tenant.consumers.map(function (consumer, i) {
             return (
-                <DataListItem>
+                <DataListItem className={Home.stateClassName(consumer)}>
                     <DataListCell>
                         {o.renderGood(consumer)}&nbsp;
                         {consumer.type}
@@ -248,6 +248,10 @@ class Home extends React.Component {
         )
     }
 
+    static stateClassName(common) {
+        return common.good ? "good" : "failed";
+    }
+
     renderProducers(tenant) {
 
         const o = this;
@@ -257,7 +261,7 @@ class Home extends React.Component {
         }
         return tenant.producers.map(function (producer, i) {
             return (
-                <DataListItem className="chart-list">
+                <DataListItem className={Home.stateClassName(producer) + " chart-list"}>
                     <DataListCell>
                         {o.renderGood(producer)}&nbsp;
                         {producer.type + " / " + producer.protocol}
@@ -269,7 +273,8 @@ class Home extends React.Component {
                     <DataListCell>
                         <AngleDoubleUpIcon/>&nbsp;
                         <strong>
-                            {o.renderSingleValue(producer.messagesPerSecondSent, "msgs/s")}
+                            {o.renderSingleValue(producer.messagesPerSecondSent, "msgs/s")}&nbsp;/&nbsp;
+                            {o.renderSingleValueBy(producer.roundTripTime, 1.0, 1, "rtt (ms)")}
                         </strong>
                     </DataListCell>
                     <DataListCell>

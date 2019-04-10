@@ -57,6 +57,8 @@ type Producer struct {
 	ConnectionsConfigured  *float64 `json:"connectionsConfigured"`
 	ConnectionsEstablished *float64 `json:"connectionsEstablished"`
 
+	RoundTripTime *float64 `json:"roundTripTime"`
+
 	ChartData   []ChartEntry       `json:"chartData"`
 	ChartLegend []ChartLegendEntry `json:"chartLegend"`
 }

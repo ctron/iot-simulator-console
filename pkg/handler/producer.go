@@ -50,6 +50,8 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 
 	ctx := context.TODO()
 
+	// messages scheduled/s
+
 	mpsScheduled, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(irate(messages_scheduled_total{tenant="%s",type="%s",protocol="%s"}[1m]))`,
 			tenant.Name, component.Type, protocol))
@@ -57,6 +59,8 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 	if err != nil {
 		log.Warnf("Failed to query msg/s scheduled: %v", err)
 	}
+
+	// messages sent/s
 
 	mpsSent, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(irate(messages_sent_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
@@ -66,6 +70,8 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		log.Warnf("Failed to query msg/s sent: %v", err)
 	}
 
+	// failures/s
+
 	mpsFailed, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(irate(messages_failure_total{type="%s",tenant="%s",protocol="%s"}[1m]))`,
 			component.Type, tenant.Name, protocol))
@@ -73,6 +79,9 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 	if err != nil {
 		log.Warnf("Failed to query msg/s failed: %v", err)
 	}
+
+	// errors/s
+
 	mpsErrored, err := c.metricsClient.QueryMap(ctx,
 		fmt.Sprintf(`sum(irate(messages_error_total{type="%s",tenant="%s",protocol="%s"}[1m])) by (code)`,
 			component.Type, tenant.Name, protocol))
@@ -81,6 +90,8 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		log.Warnf("Failed to query msg/s errored: %v", err)
 	}
 
+	// established connections
+
 	conEst, err := c.metricsClient.QuerySingle(ctx,
 		fmt.Sprintf(`sum(connections{type="%s",tenant="%s",protocol="%s"})`,
 			component.Type, tenant.Name, protocol))
@@ -88,6 +99,18 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 	if err != nil {
 		log.Warnf("Failed to query connections established: %v", err)
 	}
+
+	// RTT
+
+	rtt, err := c.metricsClient.QuerySingle(ctx,
+		fmt.Sprintf(`avg(irate(messages_duration_seconds_sum{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])/irate(messages_duration_seconds_count{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])*1000.0)`,
+			component.Type, tenant.Name, protocol))
+
+	if err != nil {
+		log.Warnf("Failed to query connections established: %v", err)
+	}
+
+	// avg(irate(messages_duration_seconds_sum{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])/irate(messages_duration_seconds_count{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])*1000.0)
 
 	var chartData []data.ChartEntry
 	if mpsSent != nil && mpsErrored != nil {
@@ -125,6 +148,8 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		MessagesPerSecondSent:       mpsSent,
 		MessagesPerSecondFailed:     mpsFailed,
 		MessagesPerSecondErrored:    sum(mpsErrored),
+
+		RoundTripTime: rtt,
 
 		ConnectionsConfigured:  conCfg,
 		ConnectionsEstablished: conEst,
