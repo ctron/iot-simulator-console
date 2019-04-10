@@ -112,8 +112,6 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		log.Warnf("Failed to query connections established: %v", err)
 	}
 
-	// avg(irate(messages_duration_seconds_sum{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])/irate(messages_duration_seconds_count{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])*1000.0)
-
 	var chartData []data.ChartEntry
 	if mpsSent != nil && mpsErrored != nil {
 		chartData = []data.ChartEntry{
