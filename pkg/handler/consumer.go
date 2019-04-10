@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ctron/iot-simulator-console/pkg/utils"
+
 	"github.com/ctron/iot-simulator-console/pkg/data"
 
 	"github.com/prometheus/common/log"
@@ -76,7 +78,7 @@ func (c *controller) fillConsumer(tenants *map[string]*data.Tenant, obj metav1.O
 	tenant.Consumers = append(tenant.Consumers, data.Consumer{
 		Component:         component,
 		MessagesPerSecond: mps,
-		PayloadPerSecond:  pps,
+		PayloadPerSecond:  utils.FilterNaN(pps),
 		MessagesHistory:   history,
 	})
 

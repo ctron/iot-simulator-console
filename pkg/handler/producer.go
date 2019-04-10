@@ -20,6 +20,8 @@ import (
 	"sort"
 	"strconv"
 
+	"github.com/ctron/iot-simulator-console/pkg/utils"
+
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/ctron/iot-simulator-console/pkg/data"
@@ -149,7 +151,7 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		MessagesPerSecondFailed:     mpsFailed,
 		MessagesPerSecondErrored:    sum(mpsErrored),
 
-		RoundTripTime: rtt,
+		RoundTripTime: utils.FilterNaN(rtt),
 
 		ConnectionsConfigured:  conCfg,
 		ConnectionsEstablished: conEst,

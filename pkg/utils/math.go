@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Red Hat Inc
+ * Copyright (c) 2019 Red Hat Inc
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -12,3 +12,21 @@
  *******************************************************************************/
 
 package utils
+
+import (
+	"math"
+)
+
+func FilterNaN(value *float64) *float64 {
+
+	if value == nil {
+		return nil
+	}
+
+	if math.IsNaN(*value) {
+		return nil
+	}
+
+	return value
+
+}
