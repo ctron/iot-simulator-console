@@ -14,8 +14,10 @@ ADD . /go/src/github.com/ctron/iot-simulator-console
 RUN \
     yum -y update && \
     yum -y install epel-release && \
-    yum -y install nodejs golang && \
+    curl -sL https://rpm.nodesource.com/setup_10.x | bash -  && \
+    yum -y install golang nodejs gcc-c++ make && \
     go version && \
+    node --version && \
     cd /go/src/github.com/ctron/iot-simulator-console && \
     npm install && \
     npm run build && \

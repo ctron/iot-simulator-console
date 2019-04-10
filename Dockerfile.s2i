@@ -1,13 +1,20 @@
-FROM fedora:29
+FROM centos:7
 
 MAINTAINER Jens Reimann <jreimann@redhat.com>
 LABEL maintainer="Jens Reimann <jreimann@redhat.com>"
 
 EXPOSE 8080
 
-RUN dnf -y update
-RUN dnf -y install nodejs golang
+RUN yum -y update
+RUN yum -y install epel-release
+RUN yum -y install golang
+
+RUN yum -y install gcc-c++ make
+RUN curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+RUN yum install -y nodejs
+
 RUN go version
+RUN node --version
 
 ENV \
     GOPATH=/go
