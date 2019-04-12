@@ -102,16 +102,6 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		log.Warnf("Failed to query connections established: %v", err)
 	}
 
-	// RTT
-
-	rtt, err := c.metricsClient.QuerySingle(ctx,
-		fmt.Sprintf(`avg(irate(messages_duration_seconds_sum{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])/irate(messages_duration_seconds_count{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])*1000.0)`,
-			component.Type, tenant.Name, protocol))
-
-	if err != nil {
-		log.Warnf("Failed to query connections established: %v", err)
-	}
-
 	var chartData []data.ChartEntry
 	if mpsSent != nil && mpsErrored != nil {
 		chartData = []data.ChartEntry{
@@ -139,10 +129,21 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		dpi = 0
 	}
 
+	var rtt *float64
+
 	switch protocol {
 	case "mqtt":
 		component.Good = conCfg != nil && conEst != nil && *conCfg == *conEst
-	default:
+	case "http":
+		// RTT
+
+		rtt, err = c.metricsClient.QuerySingle(ctx,
+			fmt.Sprintf(`avg(irate(messages_duration_seconds_sum{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])/irate(messages_duration_seconds_count{type="%[1]s",tenant="%[2]s",protocol="%[3]s"}[1m])*1000.0)`,
+				component.Type, tenant.Name, protocol))
+
+		if err != nil {
+			log.Warnf("Failed to query RTT: %v", err)
+		}
 		component.Good = isGoodHttp(mpsScheduled, mpsSent, mpsFailed)
 	}
 

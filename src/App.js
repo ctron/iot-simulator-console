@@ -249,6 +249,14 @@ class Home extends React.Component {
         return (value + " " + ((value === 1) ? singular : plural));
     }
 
+    renderRtt(producer) {
+        if (producer.protocol === "http") {
+            return (<span> {" / "} {this.renderSingleValueBy(producer.roundTripTime, 1.0, 1, "rtt (ms)")}</span>)
+        } else {
+            return null
+        }
+    }
+
     renderProducers(tenant) {
 
         const o = this;
@@ -271,8 +279,8 @@ class Home extends React.Component {
                     <DataListCell>
                         <AngleDoubleUpIcon/>&nbsp;
                         <strong>
-                            {o.renderSingleValue(producer.messagesPerSecondSent, "msgs/s")}&nbsp;/&nbsp;
-                            {o.renderSingleValueBy(producer.roundTripTime, 1.0, 1, "rtt (ms)")}
+                            {o.renderSingleValue(producer.messagesPerSecondSent, "msgs/s")}
+                            {o.renderRtt(producer)}
                         </strong>
                     </DataListCell>
                     <DataListCell>
