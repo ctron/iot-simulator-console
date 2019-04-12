@@ -48,6 +48,8 @@ type Producer struct {
 	Component `json:",inline"`
 	Protocol  string `json:"protocol"`
 
+	DevicesPerInstance int `json:"devicesPerInstance"`
+
 	MessagesPerSecondConfigured *float64 `json:"messagesPerSecondConfigured"`
 	MessagesPerSecondScheduled  *float64 `json:"messagesPerSecondScheduled"`
 	MessagesPerSecondSent       *float64 `json:"messagesPerSecondSent"`

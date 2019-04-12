@@ -14,7 +14,7 @@ import {
 
 import {
     CubesIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, ClockIcon, ExclamationTriangleIcon,
-    CheckCircleIcon
+    CogsIcon,
 } from '@patternfly/react-icons';
 
 import "./App.css"
@@ -38,10 +38,10 @@ class App extends React.Component {
             [BackgroundImageSrc.xs]: backgroundXs,
             [BackgroundImageSrc.xs2x]: backgroundXs2x,
             [BackgroundImageSrc.filter]: backgroundFilter + "#image_overlay",
-        }
+        };
         const Header = (<PageHeader
             logo={<Brand alt="IoT Simulator" src={brandImg}/>}
-        />)
+        />);
 
         return (
             <React.Fragment>
@@ -92,7 +92,7 @@ class HistoryChart extends React.Component {
             data: {
                 strokeWidth: 0
             }
-        }
+        };
 
         return (
             <div ref={this.containerRef}>
@@ -160,7 +160,7 @@ class Home extends React.Component {
                         {consumer.type}
                     </DataListCell>
                     <DataListCell>
-                        <CubesIcon/>&nbsp;<strong>{consumer.replicas} Pods</strong>
+                        <CubesIcon/>&nbsp;<strong>{Home.value(consumer.replicas, "Pod", "Pods")}</strong>
                     </DataListCell>
                     <DataListCell>
                         <AngleDoubleDownIcon/>&nbsp;
@@ -245,6 +245,10 @@ class Home extends React.Component {
         return common.good ? "good" : "failed";
     }
 
+    static value(value, singular, plural) {
+        return (value + " " + ((value === 1) ? singular : plural));
+    }
+
     renderProducers(tenant) {
 
         const o = this;
@@ -260,7 +264,9 @@ class Home extends React.Component {
                     </DataListCell>
                     <DataListCell>
                         <CubesIcon/>&nbsp;
-                        <strong>{producer.replicas} Pods</strong>
+                        <strong>{Home.value(producer.replicas, "Pod", "Pods")}</strong>
+                        {" × "}
+                        <strong>{Home.value(producer.devicesPerInstance, "Device", "Devices")}</strong>
                     </DataListCell>
                     <DataListCell>
                         <AngleDoubleUpIcon/>&nbsp;

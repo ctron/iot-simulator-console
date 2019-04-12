@@ -130,7 +130,14 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 		}
 	}
 
-	mpsCfg, conCfg := calcConfiguredMessagesPerSecond(pod, replicas)
+	mpsCfg, conCfg, devicesPerInstance := calcConfiguredMessagesPerSecond(pod, replicas)
+
+	var dpi int
+	if devicesPerInstance != nil {
+		dpi = int(*devicesPerInstance)
+	} else {
+		dpi = 0
+	}
 
 	switch protocol {
 	case "mqtt":
@@ -142,6 +149,8 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 	tenant.Producers = append(tenant.Producers, data.Producer{
 		Component: component,
 		Protocol:  protocol,
+
+		DevicesPerInstance: dpi,
 
 		MessagesPerSecondConfigured: mpsCfg,
 		MessagesPerSecondScheduled:  mpsScheduled,
@@ -179,7 +188,7 @@ func isGoodHttp(mpsScheduled, mpsSent, mpsFailed *float64) bool {
 	return true
 }
 
-func calcConfiguredMessagesPerSecond(pod *corev1.PodTemplateSpec, replicas int) (mpsConfigured *float64, connectionsConfigured *float64) {
+func calcConfiguredMessagesPerSecond(pod *corev1.PodTemplateSpec, replicas int) (mpsConfigured *float64, connectionsConfigured *float64, devicesPerInstance *float64) {
 
 	var numDevices *float64
 	var period *float64
@@ -207,12 +216,12 @@ func calcConfiguredMessagesPerSecond(pod *corev1.PodTemplateSpec, replicas int) 
 		cons := (*numDevices) * float64(replicas)
 		msgs := (*numDevices) * (1000.0 / (*period)) * float64(replicas)
 		if math.IsNaN(msgs) {
-			return nil, nil
+			return nil, nil, nil
 		}
-		return &msgs, &cons
+		return &msgs, &cons, numDevices
 	}
 
-	return nil, nil
+	return nil, nil, nil
 
 }
 
