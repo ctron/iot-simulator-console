@@ -87,7 +87,7 @@ func main() {
 		}
 	})
 
-	err = router.Run(":8080")
+	err = router.Run()
 	if err != nil {
 		log.Fatalf("Error running router: %v", err)
 	}
