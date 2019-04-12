@@ -226,11 +226,7 @@ class Home extends React.Component {
     }
 
     renderSingleValue(value, tooltip) {
-        return (<span
-            title={tooltip} data-toggle="tooltip"
-            data-placement="top">
-            {(value != null) ? value.toFixed(0) : "␀"}
-        </span>)
+        return this.renderSingleValueBy(value, 1, 0, tooltip);
     }
 
     renderSingleValueBy(value, factor, fractionDigits, tooltip) {
@@ -313,7 +309,7 @@ class Home extends React.Component {
                         return (
                             <div>
                                 <Title size="3xl">{tenant.name}</Title>
-                                <DataList>
+                                <DataList aria-label="List of all producers and consumers">
                                     {o.renderConsumers(tenant)}
                                     {o.renderProducers(tenant)}
                                 </DataList>
