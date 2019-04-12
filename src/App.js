@@ -157,7 +157,6 @@ class Home extends React.Component {
             return (
                 <DataListItem className={Home.stateClassName(consumer)}>
                     <DataListCell>
-                        {o.renderGood(consumer)}&nbsp;
                         {consumer.type}
                     </DataListCell>
                     <DataListCell>
@@ -242,12 +241,6 @@ class Home extends React.Component {
         </span>)
     }
 
-    renderGood(common) {
-        return (
-            <div className="state-indicator">{common.good ? <CheckCircleIcon/> : <ExclamationTriangleIcon/>}</div>
-        )
-    }
-
     static stateClassName(common) {
         return common.good ? "good" : "failed";
     }
@@ -263,7 +256,6 @@ class Home extends React.Component {
             return (
                 <DataListItem className={Home.stateClassName(producer) + " chart-list"}>
                     <DataListCell>
-                        {o.renderGood(producer)}&nbsp;
                         {producer.type + " / " + producer.protocol}
                     </DataListCell>
                     <DataListCell>
