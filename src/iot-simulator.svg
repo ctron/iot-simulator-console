@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
    viewBox="0 0 175.0208 21.427452"
    height="21.427452mm"
-   width="175.0208mm">
+   width="175.0208mm"
+   sodipodi:docname="iot-simulator.svg"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1387"
+     inkscape:window-height="823"
+     id="namedview35"
+     showgrid="false"
+     inkscape:zoom="0.35676712"
+     inkscape:cx="330.74796"
+     inkscape:cy="40.492823"
+     inkscape:window-x="2309"
+     inkscape:window-y="99"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg8" />
   <defs
      id="defs2" />
   <metadata
@@ -20,22 +44,65 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      transform="translate(-17.470911,-35.880686)"
      id="layer1">
-    <text
-       id="text12"
-       y="56.957825"
-       x="14.843567"
+    <g
+       aria-label="IoT Simulator"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;line-height:1.25;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.72981828"
-       xml:space="preserve"><tspan
+       id="text12">
+      <path
+         d="m 17.470911,56.957825 h 3.503126 V 36.522926 h -3.503126 z"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
-         y="56.957825"
-         x="14.843567"
-         id="tspan10">IoT Simulator</tspan></text>
+         id="path37" />
+      <path
+         d="m 31.914918,57.308137 c 4.203751,0 6.860287,-2.890078 6.860287,-7.794454 0,-4.875183 -2.656536,-7.823647 -6.860287,-7.823647 -4.174558,0 -6.831095,2.948464 -6.831095,7.823647 0,4.904376 2.656537,7.794454 6.831095,7.794454 z m 0,-3.269584 c -2.072683,0 -3.415547,-1.693177 -3.415547,-4.52487 0,-2.831693 1.342864,-4.583256 3.415547,-4.583256 2.131068,0 3.44474,1.751563 3.44474,4.583256 0,2.831693 -1.313672,4.52487 -3.44474,4.52487 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path39" />
+      <path
+         d="m 48.187574,39.880088 h 5.80935 V 36.522926 H 38.875098 v 3.357162 h 5.80935 v 17.077737 h 3.503126 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path41" />
+      <path
+         d="m 70.732104,57.308137 c 4.028594,0 7.181407,-2.218646 7.181407,-6.159662 0,-4.320522 -3.678282,-5.605001 -6.655938,-6.655939 -2.131068,-0.700625 -3.911824,-1.313672 -3.911824,-2.8025 0,-1.40125 1.08013,-2.189454 2.919271,-2.189454 1.926719,0 3.094428,0.904975 3.619897,2.101876 L 77.03773,40.55152 c -0.729818,-2.510573 -2.977657,-4.378907 -6.539168,-4.378907 -4.291329,0 -6.714324,2.510574 -6.714324,5.48823 0,3.882631 3.269584,5.021147 6.188855,6.013699 2.306225,0.788203 4.378907,1.518021 4.378907,3.473933 0,1.868333 -1.40125,2.831693 -3.503125,2.831693 -2.101876,0 -3.736668,-1.284479 -4.583256,-3.152813 l -3.240391,1.196901 c 1.109323,3.240391 3.941016,5.283881 7.706876,5.283881 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path43" />
+      <path
+         d="m 83.441878,39.996859 c 1.138516,0 2.014298,-0.904975 2.014298,-2.04349 0,-1.109323 -0.875782,-2.014297 -2.014298,-2.014297 -1.138515,0 -2.04349,0.904974 -2.04349,2.014297 0,1.138515 0.904975,2.04349 2.04349,2.04349 z m -1.72237,16.960966 h 3.415548 V 42.040348 h -3.415548 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path45" />
+      <path
+         d="m 107.07429,56.957825 h 3.41555 V 47.441 c 0,-4.20375 -2.36461,-5.750964 -5.45904,-5.750964 -1.92672,0 -3.50313,0.64224 -4.49568,2.101875 -0.7882,-1.430443 -2.131065,-2.101875 -3.911821,-2.101875 -1.547214,0 -2.8025,0.583854 -3.649089,1.72237 v -1.372058 h -3.415547 v 14.917477 h 3.415547 v -8.49508 c 0,-2.393802 1.109323,-3.532318 2.802501,-3.532318 1.751562,0 2.539766,1.138516 2.539766,3.473933 v 8.553465 h 3.415543 v -8.49508 c 0,-2.393802 1.08013,-3.532318 2.8025,-3.532318 1.75157,0 2.53977,1.138516 2.53977,3.473933 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path47" />
+      <path
+         d="m 123.7821,56.957825 h 3.41555 V 42.040348 h -3.41555 v 8.582658 c 0,2.481381 -1.1969,3.415547 -3.00684,3.415547 -1.75157,0 -2.80251,-1.021745 -2.80251,-3.473932 v -8.524273 h -3.41554 v 9.13732 c 0,4.554063 2.48138,6.130469 5.31307,6.130469 1.66399,0 2.97766,-0.583854 3.91182,-1.780755 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path49" />
+      <path
+         d="m 131.72617,56.957825 h 3.41555 V 35.880686 l -3.41555,1.605599 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path51" />
+      <path
+         d="m 148.1717,56.957825 h 3.32797 v -9.604403 c 0,-5.021146 -3.26958,-5.663386 -5.89693,-5.663386 -2.51057,0 -4.49568,0.729818 -5.83854,1.634792 l 1.05094,2.773308 c 1.25528,-0.875782 2.62734,-1.401251 4.43729,-1.401251 1.95591,0 2.91927,0.759011 2.91927,2.714923 v 0.788203 c -0.93417,-0.525469 -2.13107,-0.788203 -3.53232,-0.788203 -2.94846,0 -5.83854,1.488828 -5.83854,4.933568 0,3.269584 2.33542,4.962761 5.40065,4.962761 1.98511,0 3.24039,-0.788203 3.97021,-1.547214 z m -3.32797,-2.656537 c -1.78075,0 -2.71492,-0.788203 -2.71492,-1.955912 0,-1.430443 1.37206,-2.014297 3.06523,-2.014297 1.10933,0 2.18946,0.233542 2.97766,0.613047 v 1.926719 c -0.75901,0.788203 -1.86833,1.430443 -3.32797,1.430443 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path53" />
+      <path
+         d="m 159.96327,57.308137 c 1.2261,0 2.27703,-0.233541 3.12362,-0.671432 l 0.4087,-3.065235 c -0.7882,0.437891 -1.57641,0.671432 -2.33542,0.671432 -0.90497,0 -1.25528,-0.583854 -1.25528,-1.430443 v -7.794454 h 3.44474 v -2.977657 h -3.44474 v -6.159662 l -3.41555,1.634792 v 4.52487 h -2.21865 v 2.977657 h 2.21865 v 8.465887 c 0,2.36461 1.02175,3.824245 3.47393,3.824245 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path55" />
+      <path
+         d="m 172.74695,57.308137 c 4.20375,0 6.86029,-2.890078 6.86029,-7.794454 0,-4.875183 -2.65654,-7.823647 -6.86029,-7.823647 -4.17455,0 -6.83109,2.948464 -6.83109,7.823647 0,4.904376 2.65654,7.794454 6.83109,7.794454 z m 0,-3.269584 c -2.07268,0 -3.41554,-1.693177 -3.41554,-4.52487 0,-2.831693 1.34286,-4.583256 3.41554,-4.583256 2.13107,0 3.44474,1.751563 3.44474,4.583256 0,2.831693 -1.31367,4.52487 -3.44474,4.52487 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path57" />
+      <path
+         d="m 183.23763,56.957825 h 3.41554 v -8.349116 c 0,-2.831693 1.48883,-3.561511 2.8025,-3.561511 1.13852,0 1.92672,0.350312 2.53977,0.788203 l 0.49628,-3.12362 c -0.75902,-0.64224 -1.66399,-1.021745 -2.77331,-1.021745 -1.48883,0 -2.48138,0.671432 -3.06524,1.897526 v -1.547214 h -3.41554 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:29.19271278px;font-family:Overpass;-inkscape-font-specification:'Overpass, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;stroke-width:0.72981828"
+         id="path59" />
+    </g>
   </g>
 </svg>
