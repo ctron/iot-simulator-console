@@ -24,7 +24,7 @@ ADD . /go/src/github.com/ctron/iot-simulator-console
 
 RUN \
     cd /go/src/github.com/ctron/iot-simulator-console && \
-    ulimit -n && \
+    ulimit -n && ulimit -n -H && \
     npm install && \
     npm run build && \
     cd cmd && \
