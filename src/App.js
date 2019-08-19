@@ -172,7 +172,6 @@ class Home extends React.Component {
                     <DataListCell className="chart-cell" width={2}>
                         <HistoryChart data={consumer.messagesHistory}/>
                     </DataListCell>
-                    <DataListCell>&nbsp;</DataListCell>
                 </DataListItem>
             )
         })
@@ -287,11 +286,11 @@ class Home extends React.Component {
                         </strong>
                     </DataListCell>
                     {producer.protocol === "mqtt" ?
-                        <DataListCell className="chart-cell" width={2}>
+                        <DataListCell className="chart-cell">
                             {o.renderConnectionChart(producer)}
                         </DataListCell>
                         :
-                        <DataListCell className="chart-cell" width={2}>
+                        <DataListCell className="chart-cell">
                             {producer.chartData != null && producer.chartLegend != null ? o.renderErrorChart(producer) : ""}
                         </DataListCell>
                     }
