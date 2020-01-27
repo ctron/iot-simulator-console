@@ -94,12 +94,18 @@ func (c *controller) fillProducer(tenants *map[string]*data.Tenant, obj metav1.O
 
 	// established connections
 
-	conEst, err := c.metricsClient.QuerySingle(ctx,
-		fmt.Sprintf(`sum(connections{type="%s",tenant="%s",protocol="%s"})`,
-			component.Type, tenant.Name, protocol))
+	var conEst *float64
 
-	if err != nil {
-		log.Warnf("Failed to query connections established: %v", err)
+	switch protocol {
+	case "mqtt":
+		conEst, err = c.metricsClient.QuerySingle(ctx,
+			fmt.Sprintf(`sum(connections{type="%s",tenant="%s",protocol="%s"})`,
+				component.Type, tenant.Name, protocol))
+
+		if err != nil {
+			log.Warnf("Failed to query connections established: %v", err)
+		}
+
 	}
 
 	var chartData []data.ChartEntry
