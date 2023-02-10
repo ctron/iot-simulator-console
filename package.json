@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "@patternfly/react-charts": "^2.2.3",
+    "@patternfly/react-charts": "^6.94.18",
     "@patternfly/react-core": "^2.10.9",
     "@patternfly/react-icons": "^3.7.1",
     "ajv": "^6.9.1",
