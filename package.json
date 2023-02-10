@@ -13,7 +13,7 @@
   "devDependencies": {
     "typescript": "^3.4.1",
     "babel-cli": "^6",
-    "react-scripts": "^2.1.8",
+    "react-scripts": "^5.0.1",
     "babel-preset-react-app": "^3"
   },
   "scripts": {
