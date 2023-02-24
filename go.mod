@@ -8,7 +8,7 @@ require (
 	github.com/prometheus/client_golang v0.9.2
 	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275
 	k8s.io/api v0.0.0-20181130031204-d04500c8c3dd
-	k8s.io/apimachinery v0.0.0-20181211025822-57dc7e687b54
+	k8s.io/apimachinery v0.15.7
 	k8s.io/client-go v0.0.0-20181204000744-e64494209f55
 	sigs.k8s.io/controller-runtime v0.1.8
 )
@@ -47,7 +47,7 @@ require (
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
-	golang.org/x/net v0.0.0-20190620200207-3b0461eec859 // indirect
+	golang.org/x/net v0.0.0-20190812203447-cdfb69ac37fc // indirect
 	golang.org/x/oauth2 v0.0.0-20181203162652-d668ce993890 // indirect
 	golang.org/x/sys v0.0.0-20200116001909-b77594299b42 // indirect
 	golang.org/x/text v0.3.2 // indirect
@@ -56,6 +56,6 @@ require (
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
-	k8s.io/klog v0.1.0 // indirect
+	k8s.io/klog v0.3.1 // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
